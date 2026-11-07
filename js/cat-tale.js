@@ -26,7 +26,7 @@ const Game=(function(){
     else if(n===1){ const a0=r(0,6.28), m=7+Math.floor(k/3); for(let i=0;i<m;i++){ const a=a0+i/m*6.28; add("drop",mx,my,Math.cos(a)*42*sp,Math.abs(Math.sin(a))*40*sp+18); } }
     else if(n===2){ for(let i=0;i<2+Math.floor(k/4);i++){ const L=i%2===0; add("mouse",L?BX-16-i*20:BX+BW+2+i*20,r(BY+2,BY+BH-8),(L?1:-1)*56*sp,0,{flip:!L}); } }
     else { for(let i=0;i<1+Math.floor(k/5);i++){ const a=r(.6,2.5); add("yarn",mx-5,BY+2,Math.cos(a)*46*sp,Math.sin(a)*46*sp,{bounce:true,life:4.5}); } }
-    shootT=Math.max(.75,1.45-k*.06);
+    shootT=Math.max(1.2,1.9-k*.05);
   }
   function step(dt){
     frame+=dt; if(intro>0) intro-=dt; if(inv>0) inv-=dt; if(hitT>0) hitT-=dt; if(boss.fl>0) boss.fl-=dt;
@@ -41,12 +41,12 @@ const Game=(function(){
     shots.forEach(s=>{ s.x+=s.vx*dt; s.y+=s.vy*dt; s.life-=dt;
       if(s.bounce&&s.y>BY){ if(s.x<BX+1||s.x+s.w>BX+BW-1){ s.vx*=-1; s.x=Math.max(BX+1,Math.min(BX+BW-1-s.w,s.x)); } if(s.y+s.h>BY+BH-1||(s.y<BY+1&&s.vy<0)){ s.vy*=-1; s.y=Math.max(BY+1,Math.min(BY+BH-1-s.h,s.y)); } } });
     shots=shots.filter(s=>s.life>0&&s.x>BX-200&&s.x<BX+BW+200&&s.y<BY+BH+10);
-    /* ronde hitbox: cirkel in het midden van de kat */ const HR=3, hit=(x,y,w,h)=>{ const cx=cat.x+8, cy=cat.y+5.5, nx=Math.max(x,Math.min(cx,x+w)), ny=Math.max(y,Math.min(cy,y+h)); return (cx-nx)*(cx-nx)+(cy-ny)*(cy-ny)<HR*HR; };
+    /* ronde hitbox: cirkel in het midden van de kat */ const HR=3, hit=(x,y,w,h,R)=>{ R=R||HR; const cx=cat.x+8, cy=cat.y+5.5, nx=Math.max(x,Math.min(cx,x+w)), ny=Math.max(y,Math.min(cy,y+h)); return (cx-nx)*(cx-nx)+(cy-ny)*(cy-ny)<R*R; };
     if(inv<=0) for(const s of shots){
       if(s.y+s.h<BY||s.y>BY+BH||s.x+s.w<BX||s.x>BX+BW) continue;
       if(hit(s.x,s.y,s.w,s.h)){ hp--; inv=1; hitT=.25; if(window.SFX) SFX.hit(); if(hp<=0){ over=true; if(window.SFX) setTimeout(SFX.lose,300); deadT=0; inv=0; setTimeout(()=>window.Story&&Story.find(3,true),2600); } break; }
     }
-    if(fish&&hit(fish.x,fish.y,16,10)){ thrown={x:fish.x,y:fish.y}; fish=null; }
+    if(fish&&hit(fish.x,fish.y,16,10,6)){ thrown={x:fish.x,y:fish.y}; fish=null; }
     if(thrown){ const ax=boss.x+16-thrown.x-8, ay=24-thrown.y, dd=Math.hypot(ax,ay);
       if(dd<8){ thrown=null; boss.hp--; boss.fl=.4; if(window.SFX) SFX.coin(); hitT=0; shots=[]; fishT=r(1.6,2.8);
         if(boss.hp<=0){ won=true; winT=0; if(window.SFX) SFX.win(); if(window.Ach){ Ach.earn("tale"); if(time<60) Ach.earn("speed"); if(hp>=9) Ach.earn("flawless"); if(hp>=6) Ach.earn("barely"); } const t=Math.floor(time); if(!hi||t<hi){ hi=t; try{localStorage.setItem("taleBest",hi);}catch(e){} } } }
