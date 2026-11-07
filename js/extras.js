@@ -297,11 +297,12 @@ window.Memo=(function(){
       if(isNew){ pages.push(n); pages.sort(); put("catPages",JSON.stringify(pages)); }
       const all=isNew&&count()===5;
       const o=document.createElement("div"); o.className="page-pop"; o.setAttribute("role","dialog"); o.setAttribute("aria-label","Diary page");
-      o.innerHTML=`<div class="pg-card"><div class="pg-top"><b>${L("DIARY PAGE","DAGBOEKPAGINA")} ${n}</b><em>${count()}/5 ${L("found","gevonden")}</em></div><p class="pg-txt"></p><p class="pg-more"></p><button type="button" class="btn pg-x">${L("CLOSE","SLUITEN")} &#10005;</button></div>`;
-      document.body.appendChild(o); const x=o.querySelector(".pg-x"); x.focus({preventScroll:true});
-      const close=()=>{ if(o.isConnected) o.remove(); }; x.addEventListener("click",close); o.addEventListener("click",e=>{ if(e.target===o) close(); });
-      addEventListener("keydown",function k(e){ if(e.key==="Escape"){ close(); removeEventListener("keydown",k); } });
-      typer(o.querySelector(".pg-txt"),"* "+PAGES[n][nl()?1:0],38,()=>{ if(all) typer(o.querySelector(".pg-more"),L("* ...a door creaks open somewhere in the museum.","* ...ergens in het museum kraakt een deur open."),38); });
+      o.innerHTML=`<div class="pg-card"><div class="pg-top"><b>${L("DIARY PAGE","DAGBOEKPAGINA")} ${n}</b><em>${count()}/5 ${L("found","gevonden")}</em></div><p class="pg-txt"></p><p class="pg-more"></p><button type="button" class="btn pg-x pg-read" disabled>${L("CLOSE","SLUITEN")} &#10005;</button></div>`;
+      document.body.appendChild(o); const x=o.querySelector(".pg-x");
+      let ok=false; const ready=()=>setTimeout(()=>{ if(!o.isConnected) return; ok=true; x.disabled=false; x.classList.add("rdy"); x.focus({preventScroll:true}); },700);
+      const close=()=>{ if(ok&&o.isConnected) o.remove(); }; x.addEventListener("click",close);
+      addEventListener("keydown",function k(e){ if(!o.isConnected){ removeEventListener("keydown",k); return; } if(e.key==="Escape"&&ok){ close(); removeEventListener("keydown",k); } });
+      typer(o.querySelector(".pg-txt"),"* "+PAGES[n][nl()?1:0],38,()=>{ if(all) typer(o.querySelector(".pg-more"),L("* ...a door creaks open somewhere in the museum.","* ...ergens in het museum kraakt een deur open."),38,ready); else ready(); });
       if(all&&window.Ach) Ach.unlock("archivist");
     }
     /* het dagboek: alle gevonden pagina's teruglezen */
@@ -317,7 +318,7 @@ window.Memo=(function(){
         ${[1,2,3,4,5].map(n=>has(n)?`<div class="dg-pg"><b>${L("PAGE","PAGINA")} ${n}</b><p>* ${PAGES[n][nl()?1:0]}</p></div>`:`<div class="dg-pg miss"><b>${L("PAGE","PAGINA")} ${n} · ???</b><p>${HINTS[n][nl()?1:0]}</p></div>`).join("")}
         <button type="button" class="btn pg-x">${L("CLOSE","SLUITEN")} &#10005;</button></div>`;
       document.body.appendChild(o); const x=o.querySelector(".pg-x"); x.focus({preventScroll:true});
-      const close=()=>{ if(o.isConnected) o.remove(); }; x.addEventListener("click",close); o.addEventListener("click",e=>{ if(e.target===o) close(); });
+      const close=()=>{ if(o.isConnected) o.remove(); }; x.addEventListener("click",close);
       addEventListener("keydown",function k(e){ if(e.key==="Escape"){ e.stopImmediatePropagation(); close(); removeEventListener("keydown",k,true); } },true);
     }
     /* de achterkamer met de keuze */
@@ -459,7 +460,7 @@ window.Memo=(function(){
         <div class="sp-btns"><button type="button" class="btn sp-no">${L("I'LL PLAY FIRST","EERST SPELEN")}</button><button type="button" class="btn sp-yes">${L("WATCH IT NOW","NU KIJKEN")} &#9654;</button></div></div>`;
       document.body.appendChild(o); const no=o.querySelector(".sp-no"); no.focus({preventScroll:true});
       const close=()=>{ if(o.isConnected) o.remove(); };
-      no.addEventListener("click",close); o.addEventListener("click",e=>{ if(e.target===o) close(); });
+      no.addEventListener("click",close);
       o.querySelector(".sp-yes").addEventListener("click",()=>{ close(); movie(); });
       addEventListener("keydown",function k(e){ if(e.key==="Escape"){ close(); removeEventListener("keydown",k); } });
     }
@@ -479,7 +480,7 @@ window.Memo=(function(){
         <div class="pg-card lt-card">${lines.map((l,k)=>`<p class="${k?"lt-l":"lt-h"}">${l}</p>`).join("")}<p class="lt-sign">&mdash; PIXEL &#9829; ${L("(and CAPTAIN, and everyone)","(en CAPTAIN, en iedereen)")}</p><button type="button" class="btn pg-x">${L("CLOSE","SLUITEN")} &#10005;</button></div></div>`;
       document.body.appendChild(o); const x=o.querySelector(".pg-x"), wr=o.querySelector(".lt-wrap");
       setTimeout(()=>wr.classList.add("open"),500); setTimeout(()=>{ wr.classList.add("read"); x.focus({preventScroll:true}); },1300);
-      const close=()=>{ if(o.isConnected) o.remove(); }; x.addEventListener("click",close); o.addEventListener("click",e=>{ if(e.target===o) close(); });
+      const close=()=>{ if(o.isConnected) o.remove(); }; x.addEventListener("click",close);
       addEventListener("keydown",function k(e){ if(e.key==="Escape"){ e.stopImmediatePropagation(); close(); removeEventListener("keydown",k,true); } },true);
     }
     function letterBtn(){ return `<button type="button" class="mu-letter" aria-label="Letter from PIXEL"><span class="ml-env">${sprite("letter",6)}<i class="ml-seal">${sprite("heart",2)}</i></span><i class="ml-tag">FOR YOU</i></button>`; }
