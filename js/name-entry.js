@@ -94,7 +94,7 @@ function press(k){ if(window.SFX) SFX.click();
   if(ds.classList.contains("closed")){ if(k==="a") openLid(); return; }
   if(k==="power"){ power(); return; }
   if(ds.classList.contains("off")) return;
-  if(k==="home"){ Game.stop(); Pet.stop(); screen.classList.remove("show-stats"); msg.classList.remove("on"); setSel(0); if(window.catHome&&catHome()){ say("I escaped!!",3200); return; } say("> HOME"); return; }
+  if(k==="home"){ Game.stop(); Pet.stop(); screen.classList.remove("show-stats"); msg.classList.remove("on"); setSel(0); { const h=window.catHome&&catHome(); if(h){ say(h==="back"?"I'm back!!":"I escaped!!",3200); return; } } say("> HOME"); return; }
   if(Pet.active){ if(k==="b"||k==="select") Pet.stop(); else if(k==="x") Pet.treat(); else if(k==="y") Pet.play(); else if(["a","up","start"].includes(k)) Pet.pet(); return; }
   if(Game.active){ if(k==="b"||k==="select") Game.stop(); else if(k==="x") Game.pause(); else if(k==="y") Game.restart(); else if(["a","start"].includes(k)) Game.jump(); return; }
   if(k==="up"||k==="left") setSel(sel-1);

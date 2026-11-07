@@ -41,7 +41,7 @@ const Game=(function(){
     shots.forEach(s=>{ s.x+=s.vx*dt; s.y+=s.vy*dt; s.life-=dt;
       if(s.bounce&&s.y>BY){ if(s.x<BX+1||s.x+s.w>BX+BW-1){ s.vx*=-1; s.x=Math.max(BX+1,Math.min(BX+BW-1-s.w,s.x)); } if(s.y+s.h>BY+BH-1||(s.y<BY+1&&s.vy<0)){ s.vy*=-1; s.y=Math.max(BY+1,Math.min(BY+BH-1-s.h,s.y)); } } });
     shots=shots.filter(s=>s.life>0&&s.x>BX-200&&s.x<BX+BW+200&&s.y<BY+BH+10);
-    /* ronde hitbox: cirkel in het midden van de kat */ const HR=4, hit=(x,y,w,h)=>{ const cx=cat.x+8, cy=cat.y+5.5, nx=Math.max(x,Math.min(cx,x+w)), ny=Math.max(y,Math.min(cy,y+h)); return (cx-nx)*(cx-nx)+(cy-ny)*(cy-ny)<HR*HR; };
+    /* ronde hitbox: cirkel in het midden van de kat */ const HR=3, hit=(x,y,w,h)=>{ const cx=cat.x+8, cy=cat.y+5.5, nx=Math.max(x,Math.min(cx,x+w)), ny=Math.max(y,Math.min(cy,y+h)); return (cx-nx)*(cx-nx)+(cy-ny)*(cy-ny)<HR*HR; };
     if(inv<=0) for(const s of shots){
       if(s.y+s.h<BY||s.y>BY+BH||s.x+s.w<BX||s.x>BX+BW) continue;
       if(hit(s.x,s.y,s.w,s.h)){ hp--; inv=1; hitT=.25; if(window.SFX) SFX.hit(); if(hp<=0){ over=true; if(window.SFX) setTimeout(SFX.lose,300); deadT=0; inv=0; setTimeout(()=>window.Story&&Story.find(3,true),2600); } break; }
