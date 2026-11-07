@@ -44,7 +44,7 @@ function goGym(){
   requestAnimationFrame(()=>requestAnimationFrame(()=>{ const g=document.getElementById("gyFat"); if(g){ g.style.transition="transform 10s linear"; g.style.setProperty("--fx",1); g.style.setProperty("--fy",1); } }));
   let left=10;
   gymT=setInterval(()=>{ left--; const t=document.getElementById("gyT"); if(t) t.textContent=left;
-    if(left<=0){ clearInterval(gymT); gymT=null; fat=0; fitDone=true; if(window.Ach) Ach.unlock("gym"); if(MISSIONS[curM].rest){ openMission(curM,false); const s=document.getElementById("dShot"), w=document.createElement("i"); w.className="es-warn fit"; w.textContent="FIT AGAIN! :) READY FOR THE BOSS"; s.appendChild(w); } } },1000);
+    if(left<=0){ clearInterval(gymT); gymT=null; fat=0; fitDone=true; if(window.Ach) Ach.earn("gym"); if(MISSIONS[curM].rest){ openMission(curM,false); const s=document.getElementById("dShot"), w=document.createElement("i"); w.className="es-warn fit"; w.textContent="FIT AGAIN! :) READY FOR THE BOSS"; s.appendChild(w); } } },1000);
 }
 function meter(){ let s='<span class="fl">FULL</span>'; for(let k=0;k<FAT_MAX;k++) s+=k<fat?'<b class="on"></b>':"<b></b>"; return s; }
 function bossNo(){
@@ -88,7 +88,7 @@ function feedCat(){
   const shot=document.getElementById("dShot"), nom=shot.querySelector(".es-nom"); if(!nom) return;
   fat++; if(window.SFX) SFX.meow(); if(window.Memo) Memo.fed(); const mt=shot.querySelector(".es-meter"); if(mt) mt.innerHTML=meter(); const fw=shot.querySelector(".es-fat"); if(fw){ fw.style.setProperty("--fx",1+fat*.12); fw.style.setProperty("--fy",1+fat*.08); }
   const old=shot.querySelector(".es-warn.fit"); if(old) old.remove();
-  if(fat>=FAT_MAX){ if(window.Ach) Ach.unlock("chonk"); const ml=document.getElementById("dLink"); ml.innerHTML="GO GYM &#9654;"; if(!shot.querySelector(".es-warn")){ const w=document.createElement("i"); w.className="es-warn"; w.textContent="TOO FAT!"; shot.appendChild(w); } }
+  if(fat>=FAT_MAX){ if(window.Ach) Ach.earn("chonk"); const ml=document.getElementById("dLink"); ml.innerHTML="GO GYM &#9654;"; if(!shot.querySelector(".es-warn")){ const w=document.createElement("i"); w.className="es-warn"; w.textContent="TOO FAT!"; shot.appendChild(w); } }
   for(let k=0;k<4;k++){ const p=document.createElement("i"); p.className="kib";
     p.style.left=(176+Math.random()*58|0)+"px"; p.style.animationDelay=(k*.13)+"s"; if(Math.random()<.5) p.classList.add("kib2");
     shot.appendChild(p); setTimeout(()=>p.remove(),1500+k*130); }

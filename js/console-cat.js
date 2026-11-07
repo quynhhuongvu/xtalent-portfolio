@@ -93,11 +93,11 @@
   function trashFrame(cap){ return `<figure class="mu-fr" data-k="${cap}"><div class="mu-pic tcat-pic">${tcatHTML(3)}</div><figcaption>${cap}</figcaption></figure>`; }
   function acquireTrash(){ if(!mu) return; const wall=mu.querySelector(".mu-wall"), last=[...wall.querySelectorAll(".mu-fr")].pop();
     last.insertAdjacentHTML("beforebegin",trashFrame("CAPTAIN · REUNITED")); const p=last.previousElementSibling.querySelector(".mu-pic"); p.classList.add("acq");
-    try{ localStorage.setItem("catTrash","1"); }catch(e){} if(window.Ach) Ach.unlock("trashcat");
+    try{ localStorage.setItem("catTrash","1"); }catch(e){} if(window.Ach) Ach.earn("trashcat");
     mu.classList.remove("caught"); void mu.offsetWidth; mu.classList.add("caught");
     const g=document.createElement("p"); g.className="gotcha"; mu.querySelector(".mu-box").appendChild(g);
     const gt=TT("* i thought you were deleted forever."); let gi=0; typeT=setTimeout(function ty(){ if(!mu) return; g.textContent=gt.slice(0,++gi); if(gi<gt.length) typeT=setTimeout(ty,38); },900); }
-  window.catHome=()=>{ if(!captured) return false; captured=false; if(window.Ach) Ach.unlock("escape"); if(homeBtn) homeBtn.classList.remove("call"); screen.classList.remove("empty"); kat.style.visibility=""; goIn(0,0); face(false); kat.classList.remove("jump"); void kat.offsetWidth; kat.classList.add("jump"); return true; };
+  window.catHome=()=>{ if(!captured) return false; captured=false; if(window.Ach) Ach.earn("escape"); if(homeBtn) homeBtn.classList.remove("call"); screen.classList.remove("empty"); kat.style.visibility=""; goIn(0,0); face(false); kat.classList.remove("jump"); void kat.offsetWidth; kat.classList.add("jump"); return true; };
   function acquire(){ if(!mu) return; if(window.SFX){ SFX.eerie(); if(SFX.gotcha) SFX.gotcha(); } const f=[...mu.querySelectorAll(".mu-fr")].pop(); if(!f) return;
     const p=f.querySelector(".mu-pic"), c=f.querySelector("figcaption");
     p.classList.remove("empty"); p.innerHTML=sprite("blackcat",3); p.classList.add("acq"); c.textContent="ACQUIRED 2026"; f.dataset.k="ACQUIRED 2026"; acquired=true;
@@ -113,7 +113,7 @@
     goIn(0,0); face(false);
     if(acquired){ acquired=false; captured=true; kat.style.visibility="hidden"; screen.classList.add("empty"); if(homeBtn) homeBtn.classList.add("call"); } else if(!captured) kat.style.visibility=""; }
   function openMuseum(who){ const tr=who==="trash", vis=who==="visit"; const wasMember=isMember(); try{ localStorage.setItem("catMuseum","1"); }catch(e){}
-    inMuseum=true; acquired=false; leaving=false; if(window.SFX) SFX.creak(); if(window.Ach&&!vis) Ach.unlock("burglar"); if(door){ door.classList.add("opened"); door.innerHTML=sprite("door_open",9); }
+    inMuseum=true; acquired=false; leaving=false; if(window.SFX) SFX.creak(); if(window.Ach&&!vis) Ach.earn("burglar"); if(door){ door.classList.add("opened"); door.innerHTML=sprite("door_open",9); }
     if(!who){ kat.style.transition="scale .5s steps(5), opacity .5s steps(5)"; kat.style.scale="0.2"; kat.style.opacity="0"; }
     setTimeout(()=>{ if(!who){ kat.style.transition=""; kat.style.scale=""; kat.style.opacity=""; kat.style.visibility="hidden"; }
       mu=document.createElement("div"); mu.className="museum"; mu._vis=vis; mu.setAttribute("role","dialog"); mu.setAttribute("aria-modal","true"); mu.setAttribute("aria-label","Het geheime kattenmuseum");

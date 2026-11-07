@@ -78,7 +78,7 @@ function openMission(i,move){
     <i class="ph-bang">!</i><i class="ph-tag">PHISHING...</i>`;
   else if(m.scene==="mirror") shot.innerHTML=`<div class="cr" title="Klik om over te slaan"><div class="cr-roll">
       <div class="cr-big">THE END</div><div class="cr-h">a portfolio game by</div><div>QUYNH HUONG VU</div>
-      <div class="cr-h">starring</div><div>THE CAT</div>${bossFled?`<div class="cr-h">and the coward</div><div>${(playerName()||"PLAYER").toUpperCase()} 🐔</div>`:""}<div class="cr-h">boss</div><div>${bossFled?"DEADLINE (undefeated)":"DEADLINE"}</div>
+      <div class="cr-h">starring</div><div>THE CAT</div>${(()=>{ try{ return localStorage.getItem("cheater")==="1"; }catch(e){ return false; } })()?`<div class="cr-h">and the cheater</div><div>${(playerName()||"PLAYER").toUpperCase()} 🃏</div>`:""}${bossFled?`<div class="cr-h">and the coward</div><div>${(playerName()||"PLAYER").toUpperCase()} 🐔</div>`:""}<div class="cr-h">boss</div><div>${bossFled?"DEADLINE (undefeated)":"DEADLINE"}</div>
       <div class="cr-h">fueled by</div><div>${badRoute?"NOTHING":"SNACKS &amp; COFFEE"}</div>
       <div class="cr-big">THANKS FOR PLAYING!</div></div>
       <i class="cr-cat"><i class="es-a">${sprite("blackcat",3)}</i><i class="es-b">${sprite("blackcat2",3)}</i></i></div><i class="mr-wall"></i><i class="mr-floor"></i>

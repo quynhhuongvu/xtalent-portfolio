@@ -11,7 +11,7 @@ window.Life=(function(){
   function set(v){ const old=h; h=Math.max(0,Math.min(MAX,v)); try{ localStorage.setItem("catHearts",h); }catch(e){} draw(); if(h<old&&old>=0&&window.SFX) SFX.heartLoss();
     const e=els[h<old?h:old]; if(e&&h!==old){ e.classList.remove("hpop"); void e.offsetWidth; e.classList.add("hpop"); } }
   function lose(){ if(h<=0) return; set(h-1);
-    if(h===0){ if(window.Ach) Ach.unlock("zero"); setTimeout(gameOver,MAX===1?3400:2800); } }
+    if(h===0){ if(window.Ach) Ach.earn("zero"); setTimeout(gameOver,MAX===1?3400:2800); } }
   function gameOver(){ if(document.querySelector(".go-scr")) return; if(window.SFX){ SFX.hit(); setTimeout(SFX.hit,600); setTimeout(SFX.lose,1700); }
     const o=document.createElement("div"); o.className="museum go-scr"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Game over");
     o.innerHTML=`<div class="mu-in"><div class="go-t">GAME OVER</div><div class="go-cat">${sprite("catcry",7)}</div><div class="mu-box"><p></p><p></p></div><button type="button" class="btn mu-x" hidden>CONTINUE &#9829;</button></div>`;
@@ -34,7 +34,7 @@ window.Memo=(function(){
   const put=(k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} };
   let prev=null; try{ prev=JSON.parse(get("catMemo")||"null"); }catch(e){}
   const back=!!get("catSeen"); put("catSeen","1");
-  { const hh=new Date().getHours(); if(hh>=22||hh<5) setTimeout(()=>window.Ach&&Ach.unlock("owl"),2500); if(back) setTimeout(()=>window.Ach&&Ach.unlock("back"),2600); }
+  { const hh=new Date().getHours(); if(hh>=22||hh<5) setTimeout(()=>window.Ach&&Ach.earn("owl"),2500); if(back) setTimeout(()=>window.Ach&&Ach.earn("back"),2600); }
   let rec=null, feeds=0, greeted=false, pending=false, wonNow=false;
   function save(){ rec=rec||{feeds:0,skipped:false}; rec.feeds=feeds; put("catMemo",JSON.stringify(rec)); }
   function text(){
@@ -57,7 +57,7 @@ window.Memo=(function(){
   function endBad(){ const pc=document.querySelector(".end .p-cat"); if(pc){ pc.innerHTML=sprite("catback",4)+'<i class="crown">'+sprite("crown",3)+'</i>'+(()=>{ const sz=3; return '<i class="xhat"><i class="xh-r">'+sprite("hatred",sz)+'</i><i class="xh-w">'+sprite("hatwhite",sz)+'</i></i>'; })(); pc.classList.add("back"); } }
   function fed(){ feeds++; save(); }
   function skip(){ rec=rec||{feeds:0,skipped:false}; rec.skipped=true; save(); if(!feeds){ if(window.SFX) SFX.eerie(); badRoute=true; endBad(); if(window.Life) Life.lose(); } }
-  function won(){ wonNow=true; put("catBossWon","1"); try{ localStorage.removeItem("coward"); }catch(e){} if(window.Ach) Ach.unlock("slayer"); if(window.Life) Life.full(); }
+  function won(){ wonNow=true; put("catBossWon","1"); try{ localStorage.removeItem("coward"); }catch(e){} if(window.Ach) Ach.earn("slayer"); if(window.Life) Life.full(); }
   const hasWon=()=>wonNow||!!get("catBossWon");
   /* tab-titel als je weggaat */
   let base=null, tt=0;
@@ -84,7 +84,7 @@ window.Memo=(function(){
   });
   /* kopiëren: de kat ziet het */
   let copyT=0;
-  document.addEventListener("copy",()=>{ if(window.Ach) Ach.unlock("copy"); const n=Date.now(); if(n-copyT<15000) return; copyT=n;
+  document.addEventListener("copy",()=>{ if(window.Ach) Ach.earn("copy"); const n=Date.now(); if(n-copyT<15000) return; copyT=n;
     show(nl()?"* heb je dat net gekopieerd? de kat zag het.":"* did you just copy that? the cat saw it.",4200,"cat"); });
   /* idle: na 60 s stilte gluurt een kat binnen vanaf een willekeurige rand */
   let lastAct=Date.now(), peeks=[], used=new Set();
@@ -125,8 +125,8 @@ window.Memo=(function(){
     console.log("%c* you're not supposed to be in here.","font-family:monospace;font-size:14px;font-weight:bold;color:#ff2b2b");
     console.log("%c...but since you are: hi. the cat sees you.","font-family:monospace;font-size:12px;color:#999");
   }catch(e){}
-  function eyes(){ const h=new Date().getHours(); if(h>=22||h<5){ show(nl()?"* MIJN OGEN.":"* MY EYES.",3200,"cat"); if(window.Ach) Ach.unlock("eyes"); } }
-  function flee(){ try{ localStorage.setItem("coward","1"); }catch(e){} if(window.Ach) Ach.unlock("flee"); setTimeout(()=>show(nl()?"* ...je liep weg. de kat heeft alles gezien. * nieuwe titel: LAFAARD. 🐔":"* ...you ran. the cat saw everything. * new title unlocked: COWARD. 🐔",5200,"cat"),900); }
+  function eyes(){ const h=new Date().getHours(); if(h>=22||h<5){ show(nl()?"* MIJN OGEN.":"* MY EYES.",3200,"cat"); if(window.Ach) Ach.earn("eyes"); } }
+  function flee(){ try{ localStorage.setItem("coward","1"); }catch(e){} if(window.Ach) Ach.earn("flee"); setTimeout(()=>show(nl()?"* ...je liep weg. de kat heeft alles gezien. * nieuwe titel: LAFAARD. 🐔":"* ...you ran. the cat saw everything. * new title unlocked: COWARD. 🐔",5200,"cat"),900); }
   const toast=(t,ms)=>show(t,ms||4200,"cat");
   return {greet,fed,skip,won,hasWon,eyes,flee,toast};
 })();
@@ -148,7 +148,7 @@ window.Memo=(function(){
   const KON="up,up,down,down,left,right,left,right,b,a"; let buf=[];
   function input(k){ buf.push(k); if(buf.length>10) buf.shift(); if(buf.join()!==KON) return; buf=[];
     setRoyal(!royal);
-    if(royal){ if(window.Ach) Ach.unlock("royal"); Memo.toast(nl()?"* ...een kroon? voor mij? eindelijk wat respect.":"* ...a crown? for me? finally, some respect.",4500); }
+    if(royal){ if(window.Ach) Ach.earn("royal"); Memo.toast(nl()?"* ...een kroon? voor mij? eindelijk wat respect.":"* ...a crown? for me? finally, some respect.",4500); }
     else Memo.toast(nl()?"* hé. geef dat terug.":"* hey. give that back.",3000); }
   const KM={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",b:"b",B:"b",a:"a",A:"a"};
   addEventListener("keydown",e=>{ if(["Shift","Control","Alt","Meta"].includes(e.key)) return; input(KM[e.key]||"?"); },{capture:true});
@@ -159,7 +159,7 @@ window.Memo=(function(){
     const L={3:["* hm?","* hm?"],6:["* stop that.","* stop daarmee."],9:["* last warning.","* laatste waarschuwing."],10:["* ok. i'm leaving.","* oké. ik ga weg."]};
     tc.addEventListener("click",()=>{ if(gone) return; n++; tc.classList.remove("poke"); void tc.offsetWidth; tc.classList.add("poke");
       const l=L[n]; if(l){ tip.textContent=nl()?l[1]:l[0]; tip.hidden=false; clearTimeout(tt); tt=setTimeout(()=>tip.hidden=true,1600); }
-      if(n<10) return; gone=true; if(window.SFX&&SFX.huff) SFX.huff(); if(window.Ach) Ach.unlock("love");
+      if(n<10) return; gone=true; if(window.SFX&&SFX.huff) SFX.huff(); if(window.Ach) Ach.earn("love");
       setTimeout(()=>{ tip.hidden=true; if(window.Story&&!Story.has(5)){ const sec=document.getElementById("titel"), sr=sec.getBoundingClientRect(), cr=tc.getBoundingClientRect();
           const pg=document.createElement("i"); pg.className="tc-pg"; pg.title="?"; pg.innerHTML=sprite("doc",3); pg.style.left=(cr.left-sr.left+cr.width/2-12)+"px"; pg.style.bottom=(sr.bottom-cr.bottom)+"px"; sec.appendChild(pg);
           pg.addEventListener("click",()=>{ pg.remove(); Story.find(5); }); }
@@ -180,10 +180,10 @@ window.Memo=(function(){
       setTimeout(()=>{ if(pg) pg.classList.add("landed"); },900);
       tip.textContent=nl()?"* er viel iets uit...":"* something fell out..."; tip.hidden=false; clearTimeout(tt); tt=setTimeout(()=>tip.hidden=true,3400);
       pg.addEventListener("click",e=>{ e.stopPropagation(); if(!pg) return; pg.remove(); pg=null; tip.hidden=true; Story.find(1); }); }
-    tr.addEventListener("click",()=>{ if(window.Story&&!Story.has(1)&&fi===2){ fi++; tr.classList.remove("dig"); void tr.offsetWidth; tr.classList.add("dig"); if(window.SFX) SFX.rustle(); tip.hidden=true; if(window.Ach) Ach.unlock("trash"); dropPage(); return; } const f=F[fi++%F.length]; tr.classList.remove("dig"); void tr.offsetWidth; tr.classList.add("dig"); if(window.SFX) SFX.rustle();
+    tr.addEventListener("click",()=>{ if(window.Story&&!Story.has(1)&&fi===2){ fi++; tr.classList.remove("dig"); void tr.offsetWidth; tr.classList.add("dig"); if(window.SFX) SFX.rustle(); tip.hidden=true; if(window.Ach) Ach.earn("trash"); dropPage(); return; } const f=F[fi++%F.length]; tr.classList.remove("dig"); void tr.offsetWidth; tr.classList.add("dig"); if(window.SFX) SFX.rustle();
       if(f[0]){ const it=document.createElement("i"); it.className="trash-item"; it.style.setProperty("--dx",((Math.random()<.5?-1:1)*(18+Math.random()*22))+"px"); it.innerHTML=sprite(f[0],4); tr.parentNode.appendChild(it); setTimeout(()=>it.remove(),1300); }
       tip.textContent=nl()?f[2]:f[1]; tip.hidden=false; clearTimeout(tt); tt=setTimeout(()=>tip.hidden=true,3400);
-      if(window.Ach) Ach.unlock("trash");
+      if(window.Ach) Ach.earn("trash");
       let moved=false; try{ moved=!!localStorage.getItem("catTrash"); }catch(e){}
       if(!window.tcatOut&&!moved&&Math.random()<1/30){ tip.textContent=nl()?"* ...wacht. er bewoog iets.":"* ...wait. something moved."; setTimeout(spawnTcat,700); } });
     /* de vuilniskat: schiet uit de bak, oppakken en naar de deur slepen */
@@ -243,7 +243,7 @@ window.Memo=(function(){
     f.addEventListener("click",()=>{ if(window.canHeld){ if(cut[i]) regrow(f,i,sz); return; } if(cut[i]) return; cut[i]=1; try{ localStorage.setItem("catCut",JSON.stringify(cut)); }catch(e){}
       f.innerHTML=sprite("sunstem",sz)+'<i class="sun-head">'+sprite("sunhead",sz)+'</i>'; f.classList.add("cut"); if(window.SFX) SFX.snip();
       setTimeout(()=>{ const h=f.querySelector(".sun-head"); if(h) h.remove(); },1300);
-      syncCan(); if(allCut()&&window.Ach&&!Ach.has("snip")){ Ach.unlock("snip"); setTimeout(()=>Memo.toast(nl()?"* ...de tuin is weg. ben je nu blij?":"* ...the garden is gone. are you happy now?",4500),1400); } });
+      syncCan(); if(allCut()&&window.Ach&&!Ach.has("snip")){ Ach.earn("snip"); setTimeout(()=>Memo.toast(nl()?"* ...de tuin is weg. ben je nu blij?":"* ...the garden is gone. are you happy now?",4500),1400); } });
   });
   /* groot scherm voor cat-tale en pet the cat */
   const scr=document.getElementById("screen"), lidEl=document.getElementById("lid"), dsw=document.getElementById("dsWrap"), gcv=document.getElementById("gameCv");
@@ -303,7 +303,7 @@ window.Memo=(function(){
       const close=()=>{ if(ok&&o.isConnected) o.remove(); }; x.addEventListener("click",close);
       addEventListener("keydown",function k(e){ if(!o.isConnected){ removeEventListener("keydown",k); return; } if(e.key==="Escape"&&ok){ close(); removeEventListener("keydown",k); } });
       typer(o.querySelector(".pg-txt"),"* "+PAGES[n][nl()?1:0],38,()=>{ if(all) typer(o.querySelector(".pg-more"),L("* ...a door creaks open somewhere in the museum.","* ...ergens in het museum kraakt een deur open."),38,ready); else ready(); });
-      if(all&&window.Ach) Ach.unlock("archivist");
+      if(all&&window.Ach) Ach.earn("archivist");
     }
     /* het dagboek: alle gevonden pagina's teruglezen */
     const HINTS={1:["* it smells like old fish where this page fell.","* waar deze pagina viel, ruikt het naar oude vis."],
@@ -359,7 +359,7 @@ window.Memo=(function(){
         say([L("* now there is a new student. with a black cat.","* nu is er een nieuwe student. met een zwarte kat."),L("* she will graduate too. and then her cat will be alone.","* zij studeert ook af. en dan is haar kat alleen."),L("* ...will you remember me?","* ...zal jij mij onthouden?")],()=>{
           const ch=r.querySelector(".rm-choice"); ch.hidden=false; ch.querySelector("button").focus({preventScroll:true});
           const pick=v=>{ ch.hidden=true; put("catEnding",v); setTimeout(crew,0); { const hn=mu.querySelector(".mu-hint"); if(hn&&!mu.querySelector(".fam")) hn.insertAdjacentHTML("beforebegin",family()); } { const d=new Date(); put("catEndDate",String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear()); }
-            const pl=mu.querySelector(".mu-plate"); if(pl) pl.textContent="PIXEL"; const fb=document.querySelector('#filters [aria-pressed="true"]'); if(fb) fb.click(); if(window.Ach) Ach.unlock("story"); postCredits(); wall(mu,v);
+            const pl=mu.querySelector(".mu-plate"); if(pl) pl.textContent="PIXEL"; const fb=document.querySelector('#filters [aria-pressed="true"]'); if(fb) fb.click(); if(window.Ach) Ach.earn("story"); postCredits(); wall(mu,v);
             if(v==="stay") say([L("* ...","* ..."),L("* ...thank you.","* ...dankjewel."),L("* i think i can stop collecting now.","* ik denk dat ik nu kan stoppen met verzamelen.")],last);
             else { r.classList.add("rm-freeing"); say([L("* ...you're right.","* ...je hebt gelijk."),L("* they deserve to be remembered somewhere else.","* ze verdienen het om ergens anders herinnerd te worden."),L("* go. all of you.","* ga maar. allemaal.")],()=>
               say([L("* ...wait. if they can go...","* ...wacht. als zij mogen gaan..."),L("* ...can i go too?","* ...mag ik dan ook gaan?"),L("* CAPTAIN. let's go exploring. ♥","* CAPTAIN. kom, we gaan op avontuur. ♥")],last)); } };
@@ -435,7 +435,7 @@ window.Memo=(function(){
       function show(i){ stopAll(); tok++; const my=tok; ready=false; more.hidden=true;
         k=Math.max(0,Math.min(SC.length-1,i)); const sc=SC[k];
         st.innerHTML=sc.v(); o.querySelector(".mv-n").textContent=(k+1)+"/"+SC.length; ps.forEach(p=>p.textContent="");
-        if(k===SC.length-1){ if(window.Ach) Ach.unlock("movie"); put("catMovie","1"); crew(); }
+        if(k===SC.length-1){ if(window.Ach) Ach.earn("movie"); put("catMovie","1"); crew(); }
         let j=0; (function nx(){ if(my!==tok) return; if(j>=sc.c.length){ finished(); return; }
           ivs.push(typer(ps[j],sc.c[j][nl()?1:0],58,()=>{ if(my!==tok) return; j++; tms.push(setTimeout(nx,700)); })); })(); }
       /* klik: tekst meteen afmaken, of naar de volgende scène */
@@ -490,7 +490,7 @@ window.Memo=(function(){
   const tl=document.getElementById("tl");
   if(tl){ let st=null, se=null; const stop=()=>{ clearTimeout(st); st=null; se=null; };
     const start=e=>{ const el=e.target.closest&&e.target.closest(".ev.secret"); if(!el){ stop(); return; } if(se===el) return; stop(); se=el;
-      st=setTimeout(()=>{ if(se===el&&parseFloat(getComputedStyle(el).opacity)>=.99&&(el.matches(":hover")||el.matches(":focus-within"))&&window.Ach) Ach.unlock("snoop"); },1500); };
+      st=setTimeout(()=>{ if(se===el&&parseFloat(getComputedStyle(el).opacity)>=.99&&(el.matches(":hover")||el.matches(":focus-within"))&&window.Ach) Ach.earn("snoop"); },1500); };
     ["mouseover","focusin","click"].forEach(ev=>tl.addEventListener(ev,start));
     tl.addEventListener("mouseout",e=>{ if(se&&!(e.relatedTarget&&se.contains(e.relatedTarget))) stop(); }); tl.addEventListener("focusout",e=>{ if(se&&!(e.relatedTarget&&se.contains(e.relatedTarget))) stop(); }); }
 })();

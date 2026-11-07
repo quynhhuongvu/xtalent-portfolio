@@ -1,7 +1,7 @@
 /* vensters: min / sluit / slepen */
 document.querySelectorAll(".win").forEach(w=>{
   w.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>{
-    if(b.dataset.act==="min"){ w.classList.toggle("min"); if(window.Ach) Ach.unlock("mini"); } else w.hidden=true;
+    if(b.dataset.act==="min"){ w.classList.toggle("min"); if(window.Ach) Ach.earn("mini"); } else w.hidden=true;
     drawWires();
   }));
   if(!w.hasAttribute("data-wire")) return;

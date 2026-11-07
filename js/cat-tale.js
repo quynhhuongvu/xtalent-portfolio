@@ -41,7 +41,7 @@ const Game=(function(){
     shots.forEach(s=>{ s.x+=s.vx*dt; s.y+=s.vy*dt; s.life-=dt;
       if(s.bounce&&s.y>BY){ if(s.x<BX+1||s.x+s.w>BX+BW-1){ s.vx*=-1; s.x=Math.max(BX+1,Math.min(BX+BW-1-s.w,s.x)); } if(s.y+s.h>BY+BH-1||(s.y<BY+1&&s.vy<0)){ s.vy*=-1; s.y=Math.max(BY+1,Math.min(BY+BH-1-s.h,s.y)); } } });
     shots=shots.filter(s=>s.life>0&&s.x>BX-200&&s.x<BX+BW+200&&s.y<BY+BH+10);
-    const hit=(x,y,w,h)=>cat.x+4<x+w&&cat.x+13>x&&cat.y+3<y+h&&cat.y+10>y;
+    /* ronde hitbox: cirkel in het midden van de kat */ const HR=4, hit=(x,y,w,h)=>{ const cx=cat.x+8, cy=cat.y+5.5, nx=Math.max(x,Math.min(cx,x+w)), ny=Math.max(y,Math.min(cy,y+h)); return (cx-nx)*(cx-nx)+(cy-ny)*(cy-ny)<HR*HR; };
     if(inv<=0) for(const s of shots){
       if(s.y+s.h<BY||s.y>BY+BH||s.x+s.w<BX||s.x>BX+BW) continue;
       if(hit(s.x,s.y,s.w,s.h)){ hp--; inv=1; hitT=.25; if(window.SFX) SFX.hit(); if(hp<=0){ over=true; if(window.SFX) setTimeout(SFX.lose,300); deadT=0; inv=0; setTimeout(()=>window.Story&&Story.find(3,true),2600); } break; }
@@ -49,7 +49,7 @@ const Game=(function(){
     if(fish&&hit(fish.x,fish.y,16,10)){ thrown={x:fish.x,y:fish.y}; fish=null; }
     if(thrown){ const ax=boss.x+16-thrown.x-8, ay=24-thrown.y, dd=Math.hypot(ax,ay);
       if(dd<8){ thrown=null; boss.hp--; boss.fl=.4; if(window.SFX) SFX.coin(); hitT=0; shots=[]; fishT=r(1.6,2.8);
-        if(boss.hp<=0){ won=true; winT=0; if(window.SFX) SFX.win(); if(window.Ach){ Ach.unlock("tale"); if(time<60) Ach.unlock("speed"); if(hp>=9) Ach.unlock("flawless"); if(hp>=6) Ach.unlock("barely"); } const t=Math.floor(time); if(!hi||t<hi){ hi=t; try{localStorage.setItem("taleBest",hi);}catch(e){} } } }
+        if(boss.hp<=0){ won=true; winT=0; if(window.SFX) SFX.win(); if(window.Ach){ Ach.earn("tale"); if(time<60) Ach.earn("speed"); if(hp>=9) Ach.earn("flawless"); if(hp>=6) Ach.earn("barely"); } const t=Math.floor(time); if(!hi||t<hi){ hi=t; try{localStorage.setItem("taleBest",hi);}catch(e){} } } }
       else { thrown.x+=ax/dd*240*dt; thrown.y+=ay/dd*240*dt; } }
   }
   function draw(){
@@ -139,23 +139,23 @@ const Pet=(function(){
   function reset(){ scratch=0; scratchCd=0; love=40; hearts=[]; pets=0; recent=[]; grumpy=0; purr=0; hop=0; blinkT=2; maxT=0; snack=null; toy=null; nom=0; }
   function treat(){ if(snack||grumpy>0) return; snack={x:CX+30,y:-8}; }
   function play(){ if(toy||grumpy>0) return; toy={x:W+6,dir:-1,t:0}; }
-  function addLove(n){ love=Math.min(100,love+n); for(let i=0;i<3;i++) hearts.push({x:CX+8+Math.random()*30,y:CY+4,vx:(Math.random()-.5)*24,life:1.2}); if(love>=100&&maxT<=0){ maxT=2; hop=.5; if(window.Ach) Ach.unlock("maxlove"); } }
+  function addLove(n){ love=Math.min(100,love+n); for(let i=0;i<3;i++) hearts.push({x:CX+8+Math.random()*30,y:CY+4,vx:(Math.random()-.5)*24,life:1.2}); if(love>=100&&maxT<=0){ maxT=2; hop=.5; if(window.Ach) Ach.earn("maxlove"); } }
   function pet(){ if(window.SFX) SFX.pet();
     if(grumpy>0) return;
     if(love<=0){ scratch=.8; return; }
     const now=performance.now(); recent=recent.filter(t=>now-t<1500); recent.push(now);
     if(recent.length>9){ grumpy=1.6; love=Math.max(0,love-15); recent=[]; return; }
-    love=Math.min(100,love+7); pets++; total++; purr=.8; if(total>=25&&window.Ach) Ach.unlock("pet");
+    love=Math.min(100,love+7); pets++; total++; purr=.8; if(total>=25&&window.Ach) Ach.earn("pet");
     try{ localStorage.setItem("katPets",total); }catch(e){}
     hearts.push({x:CX+10+Math.random()*26,y:CY+4,vx:(Math.random()-.5)*18,life:1.2});
-    if(love>=100&&maxT<=0){ maxT=2; hop=.5; if(window.Ach) Ach.unlock("maxlove"); }
+    if(love>=100&&maxT<=0){ maxT=2; hop=.5; if(window.Ach) Ach.earn("maxlove"); }
   }
   function step(dt){
     love=Math.max(0,love-dt*3.5); purr=Math.max(0,purr-dt); grumpy=Math.max(0,grumpy-dt); hop=Math.max(0,hop-dt); maxT=Math.max(0,maxT-dt);
     blinkT-=dt; if(blinkT<-.15) blinkT=2+Math.random()*3;
     hearts.forEach(h=>{h.y-=28*dt; h.x+=h.vx*dt; h.life-=dt;}); hearts=hearts.filter(h=>h.life>0);
     nom=Math.max(0,nom-dt); scratch=Math.max(0,scratch-dt);
-    if(love<=0){ scratchCd-=dt; if(scratchCd<=0){ scratch=.8; scratchCd=3.5; if(window.Ach) Ach.unlock("scratch"); } } else scratchCd=1.2;
+    if(love<=0){ scratchCd-=dt; if(scratchCd<=0){ scratch=.8; scratchCd=3.5; if(window.Ach) Ach.earn("scratch"); } } else scratchCd=1.2;
     if(snack){ snack.y+=70*dt; if(snack.y>=CY+14){ snack=null; nom=1; addLove(15); } }
     if(toy){ toy.t+=dt; toy.x+=toy.dir*70*dt; if(toy.dir<0&&toy.x<=CX+50){ toy.dir=1; hop=.5; addLove(8); } if(toy.dir>0&&toy.x>W+8) toy=null; }
   }

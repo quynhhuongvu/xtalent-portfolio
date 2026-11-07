@@ -99,5 +99,9 @@ window.Ach=(function(){
     o.addEventListener("click",close); setTimeout(close,5000);
   }
   render(); if(done()) addSecret(); topSecret();
-  return {unlock,has:id=>!!got[id],done,saw,read,theme,refresh:render};
+  let cheatSaid=false;
+  function cheat(ids){ localPut("cheater","1"); ids.forEach(unlock);
+    if(!cheatSaid){ cheatSaid=true; setTimeout(()=>window.Memo&&Memo.toast(nl()?"* ...goed geprobeerd. de kat zag je in de console. * nieuwe titel: VALSSPELER. 🃏":"* ...nice try. the cat saw you in the console. * new title unlocked: CHEATER. 🃏",6000),1200); }
+    return nl()?"* de kat heeft het gezien. 🃏":"* the cat saw that. 🃏"; }
+  return {earn:unlock,unlock:id=>cheat([id]),all:()=>cheat(LIST.map(a=>a[0])),has:id=>!!got[id],done,saw,read,theme,refresh:render};
 })();

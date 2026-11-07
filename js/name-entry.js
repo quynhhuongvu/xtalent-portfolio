@@ -79,12 +79,12 @@ window.NameEntry=(function(){
 document.querySelector(".title .hero img").addEventListener("click",()=>{ const h=document.querySelector(".title .hero"); h.classList.remove("jump"); void h.offsetWidth; h.classList.add("jump"); if(window.SFX) SFX.jump(); });
 function power(){
   const on=ds.classList.toggle("off")===false;
-  if(on){ screen.classList.remove("boot"); void screen.offsetWidth; screen.classList.add("boot"); if(window.SFX) SFX.boot(); setTimeout(()=>{ const hi=n=>{ let cw=0; try{ cw=localStorage.getItem("coward")==="1"; }catch(e){} say("> Hii, "+(n||"player")+(cw?" the coward":"")+"!"); }; if(NameEntry.need()) NameEntry.open(hi); else hi(playerName()); },window.SFX&&SFX.on?950:500); if(window.Memo) Memo.greet(); if(window.Ach) Ach.unlock("boot"); }
+  if(on){ screen.classList.remove("boot"); void screen.offsetWidth; screen.classList.add("boot"); if(window.SFX) SFX.boot(); setTimeout(()=>{ const hi=n=>{ let cw=0, ch=0; try{ cw=localStorage.getItem("coward")==="1"; ch=localStorage.getItem("cheater")==="1"; }catch(e){} say("> Hii, "+(n||"player")+(cw&&ch?" the cheating coward":cw?" the coward":ch?" the cheater":"")+"!"); }; if(NameEntry.need()) NameEntry.open(hi); else hi(playerName()); },window.SFX&&SFX.on?950:500); if(window.Memo) Memo.greet(); if(window.Ach) Ach.earn("boot"); }
   else { if(window.SFX) SFX.off(); Game.stop(); Pet.stop(); screen.classList.remove("show-stats"); msg.classList.remove("on"); document.querySelectorAll(".win[data-wire]").forEach(w=>{ w.hidden=true; w.classList.remove("min","flash","pop"); }); drawWires(); }
 }
 document.getElementById("lidBack").addEventListener("click",openLid);
 let lidT=0;
-function closeLid(){ if(ds.classList.contains("closed")||!ds.classList.contains("off")) return; ds.classList.add("closed"); if(window.Ach) Ach.unlock("sleep"); setTimeout(drawWires,850); }
+function closeLid(){ if(ds.classList.contains("closed")||!ds.classList.contains("off")) return; ds.classList.add("closed"); if(window.Ach) Ach.earn("sleep"); setTimeout(drawWires,850); }
 ds.addEventListener("click",e=>{
   if(e.target.closest("#lidBack,button,.cpad,.touch,canvas")) return;
   if(performance.now()-lidT<900) return;
