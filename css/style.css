@@ -901,7 +901,7 @@ html:not([data-theme="light"]) .bossc .b .spr{color:#000;filter:drop-shadow(2px 
 .pg-card{width:min(520px,100%);box-sizing:border-box;background:var(--paper);border:var(--px) dashed var(--ink);box-shadow:8px 8px 0 var(--mid);padding:18px 20px;font-family:var(--f-px);color:var(--ink);rotate:-1.5deg;animation:pop .3s steps(5)}
 .pg-top{display:flex;justify-content:space-between;gap:10px;font-size:10px;margin-bottom:14px}.pg-top b{font-weight:400;color:var(--red)}.pg-top em{font-style:normal;color:var(--dim);font-size:8px}
 .pg-txt,.pg-more{font-family:var(--f-txt);font-size:22px;line-height:1.2;margin:0 0 10px;min-height:1.2em}.pg-more{color:var(--red)}
-.pg-x{margin-top:6px;cursor:pointer}
+.pg-x{margin-top:6px;cursor:pointer}.pg-read:disabled{opacity:.35;cursor:default}.pg-read.rdy{animation:blink 1s steps(2) 2}
 .sp-card{rotate:0deg;border-style:solid;border-color:#ffd23f}.sp-card .pg-top b{color:#ffd23f}
 .sp-btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}.sp-btns .btn{margin:0;cursor:pointer}
 .sp-btns .sp-yes{border-color:var(--red);color:var(--red)}.sp-btns .sp-yes:hover,.sp-btns .sp-yes:focus-visible{background:var(--red);color:var(--paper)}
