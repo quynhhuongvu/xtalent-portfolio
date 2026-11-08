@@ -41,15 +41,17 @@ window.Nook=(function(){
     const d=document.createElement("button"); d.type="button"; d.id="nookDoor"; d.className="dr-bush"; d.setAttribute("aria-label","a bush"); d.title="...";
     d.innerHTML=`<span class="bd lay"><span class="nk-d1">${spr("door",5.5)}</span><span class="nk-d2">${spr("plank",5.5)}</span><span class="nk-d3">${spr("hwin",5.5)}</span><span class="nk-d4">${spr("knob",5.5)}</span></span><span class="bl"><span class="bf">${spr("bushLf",8.5)}</span><span class="bo">${spr("bushL",8.5)}</span></span><span class="br"><span class="bf">${spr("bushRf",8.5)}</span><span class="bo">${spr("bushR",8.5)}</span></span>`;
     sd.parentNode.insertBefore(d,sd.parentNode.firstChild);
+    /* eens geopend blijft de struik open: de deur blijft zichtbaar */
+    if(get("nookBush")==="1") d.classList.add("part","ready");
     /* de eerste zonnebloemen schuiven op zodat de struik vrij staat */
     [...sd.parentNode.children].forEach(c=>{ const l=c.style.left; if(l==="4%") c.classList.add("ds1"); else if(l==="12%") c.classList.add("ds2"); else if(c.id==="trashCan") c.classList.add("ds3"); }); sd.parentNode.removeAttribute("aria-hidden");
     /* klik 1: de struik gaat open en de deur knippert. klik 2: de deur gaat open */
     let shut=0;
     d.addEventListener("click",()=>{ if(document.querySelector(".dr")||d.classList.contains("open")) return;
       if(!d.classList.contains("part")){ d.classList.add("part"); if(window.SFX&&SFX.blip) SFX.blip(); setTimeout(()=>d.classList.add("ready"),500);
-        clearTimeout(shut); shut=setTimeout(()=>d.classList.remove("part","ready"),12000); return; }
+        put("nookBush","1"); return; }
       if(!d.classList.contains("ready")) return; clearTimeout(shut); d.classList.remove("ready"); d.classList.add("open"); if(window.SFX&&SFX.creak) SFX.creak();
-      setTimeout(()=>room(()=>{ d.classList.remove("open","part"); }),600); }); }
+      setTimeout(()=>room(()=>{ d.classList.remove("open"); d.classList.add("ready"); }),600); }); }
   /* ---------- 2b. een vuurvliegje dat hem de weg wijst ---------- */
   let fly=null;
   function firefly(){ if(fly||!on()||get("nookRoom")==="1") return; const bush=document.getElementById("nookDoor"); if(!bush) return;
