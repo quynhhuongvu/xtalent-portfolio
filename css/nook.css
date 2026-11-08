@@ -1,0 +1,377 @@
+/* een kamer die maar voor 1 persoon bestaat */
+.dr,.drh{--ink:#fff;--paper:#000;--red:#ff2b2b;--brown:#b5794a;--dk:#7a4e2c;--gold:#f2c14e;--night:#0b1030;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:16px;font-family:var(--f-txt);color:var(--ink);animation:dr-in .5s steps(5) both}
+@keyframes dr-in{from{opacity:0}to{opacity:1}}
+.dr *,.drh *{box-sizing:border-box}
+.dr svg,.drh svg{display:block}
+.dr .card,.drh .card{width:min(560px,100%);flex:none}
+.drh .card{cursor:pointer}
+.dr .x,.dr button{font:inherit}
+/* zijn deur, verstopt achter een struik */
+.dr-bush{position:absolute;bottom:0;left:-14px;width:120px;height:60px;background:none;border:0;padding:0;cursor:pointer;line-height:0}
+.dr-bush .bl,.dr-bush .br{position:absolute;bottom:0;color:var(--ink);transition:transform .5s steps(5)}
+.dr-bush .bl{left:0;animation:dr-bushL 4s steps(1) infinite}.dr-bush .br{right:0;animation:dr-bushR 4s steps(1) infinite}
+@keyframes dr-bushL{0%,78%,100%{transform:none;filter:none;opacity:1}80%{filter:brightness(.6)}82%{transform:translateX(-5px);filter:drop-shadow(0 0 6px var(--red))}86%{transform:none;filter:none}90%{transform:translateX(-3px);filter:drop-shadow(0 0 8px var(--red))}94%{transform:none;filter:none}}
+@keyframes dr-bushR{0%,78%,100%{transform:none;filter:none;opacity:1}80%{filter:brightness(.6)}82%{transform:translateX(5px);filter:drop-shadow(0 0 6px var(--red))}86%{transform:none;filter:none}90%{transform:translateX(3px);filter:drop-shadow(0 0 8px var(--red))}94%{transform:none;filter:none}}
+.dr-bush:hover .bl{animation:none;transform:translateX(-4px)}.dr-bush:hover .br{animation:none;transform:translateX(4px)}
+.dr-bush.part .bl{animation:none;transform:translateX(-46px)}.dr-bush.part .br{animation:none;transform:translateX(46px)}
+.dr-bush .bd{position:absolute;left:42px;bottom:0;display:block}
+.dr-bush .bd>*{position:absolute;left:0;top:0;line-height:0}.dr-bush .bd>:first-child{position:relative}
+.dr-bush .nk-d1{color:#b5794a}.dr-bush .nk-d2{color:#7a4e2c}.dr-bush .nk-d3{color:#ff2b2b}.dr-bush .nk-d4{color:#f2c14e}
+.dr-bush.open .bd>:not(:first-child){display:none}.dr-bush.open .nk-d1{color:#ffd88a;filter:drop-shadow(0 0 8px #ffd88a)}
+/* oneindig hart */
+.hud .p1 .inf{color:var(--red);margin:0 6px 0 4px;display:inline-flex;align-items:center;animation:dr-glow 2s steps(2) infinite}
+.dr .card{position:relative;background:var(--paper);border:4px solid var(--ink);box-shadow:8px 8px 0 var(--ink);overflow:hidden}
+.dr /* door scene */
+.hall{height:330px;display:flex;align-items:flex-end;justify-content:center;gap:60px;padding-bottom:40px;border-bottom:0}
+.dr .ddoor{position:relative;cursor:pointer;background:none;border:0;padding:0;text-align:center}
+.dr .ddoor .lay{position:relative}
+.dr .ddoor .lay>*{position:absolute;left:0;top:0}
+.dr .ddoor .lay>:first-child{position:relative}
+.dr .ddoor .l-door{color:var(--brown)}
+.dr .ddoor .l-plank{color:var(--dk)}
+.dr .ddoor .l-win{color:var(--red);animation:dr-glow 1.6s steps(2) infinite}
+.dr .ddoor .l-knob{color:var(--gold)}
+@keyframes dr-glow{50%{color:#ff8a8a}}
+.dr .ddoor:hover .lay{transform:translateY(-2px)}
+.dr .ddoor .tag{font-family:var(--f-px);font-size:8px;color:var(--brown);margin-top:10px;display:block}
+.dr .ddoor.open .lay>:not(:first-child){display:none}
+.dr .ddoor.open .l-door{color:#ffd88a;filter:drop-shadow(4px 0 0 var(--brown)) drop-shadow(-4px 0 0 var(--brown)) drop-shadow(0 -4px 0 var(--brown))}
+.dr .ddoor.open .l-door svg{opacity:.85}
+.dr .mat{width:96px;height:8px;background:var(--dk);margin:6px auto 0}
+.dr /* room */
+.room{height:540px;background:linear-gradient(var(--night) 0 64%,#1a1206 64%)}
+.dr .room:before{content:"";position:absolute;left:0;right:0;top:64%;height:4px;background:var(--brown)}
+.dr .win{position:absolute;z-index:2;left:50%;top:22px;width:min(380px,64%);height:210px;transform:translateX(-50%);border:6px solid var(--brown);background:#05071a;overflow:hidden}
+.dr .win:after{content:"";position:absolute;left:50%;top:0;bottom:0;width:6px;margin-left:-3px;background:var(--brown)}
+.dr .win .moon{position:absolute;right:22px;top:16px;color:#ffe9a8}
+.dr .win:before{content:"";position:absolute;left:0;right:0;top:50%;height:6px;margin-top:-3px;background:var(--brown);z-index:1}
+.dr .star{position:absolute;width:3px;height:3px;background:#fff;animation:dr-tw 2s steps(2) infinite}
+.dr .star.s{width:2px;height:2px;opacity:.7}
+@keyframes dr-tw{50%{opacity:.2}}
+.dr .shoot{position:absolute;width:18px;height:3px;background:linear-gradient(90deg,#fff,transparent);opacity:0;animation:dr-sh 7s linear infinite 2s;transform-origin:0 50%}
+@keyframes dr-sh{0%{opacity:0;transform:translate(0,0) rotate(-30deg)}3%{opacity:1}12%{opacity:0;transform:translate(-110px,60px) rotate(-30deg)}100%{opacity:0;transform:translate(-110px,60px) rotate(-30deg)}}
+.dr .fall{position:absolute;width:22px;height:3px;background:linear-gradient(90deg,#fff,transparent);opacity:0;animation:dr-fall 1.3s linear forwards}
+@keyframes dr-fall{0%{opacity:0;transform:translate(0,0) rotate(-30deg)}10%{opacity:1}100%{opacity:0;transform:translate(-140px,80px) rotate(-30deg)}}
+.dr .shade{position:absolute;inset:0;background:rgba(0,0,8,.72);opacity:0;transition:opacity .6s steps(4);pointer-events:none;z-index:1}
+.dr .room.dark .shade{opacity:1}
+.dr .room.dark .win{box-shadow:0 0 40px rgba(140,160,255,.25)}
+.dr .stand{position:absolute;left:26px;top:calc(64% - 40px);width:84px;height:52px;background:var(--dk);border-top:6px solid var(--brown)}
+.dr .drw{position:absolute;left:10px;right:10px;top:10px;height:18px;border:3px solid var(--brown);background:var(--dk);padding:0;cursor:pointer;transition:transform .3s steps(3)}
+.dr .drw:after{content:"";position:absolute;left:50%;top:4px;width:8px;height:4px;margin-left:-4px;background:var(--gold)}
+.dr .drw:hover{transform:translateY(1px)}
+.dr .cal{position:absolute;z-index:0;left:16px;top:52px;width:56px;padding:3px 3px 4px;background:#f1ead8;border:0;cursor:pointer;box-shadow:3px 3px 0 rgba(0,0,0,.35);transform:rotate(-2deg)}
+.dr .cal:hover{transform:rotate(-2deg) translateY(-1px)}
+@media (max-width:480px){.dr .cal{left:6px;transform:rotate(-2deg) scale(.8);transform-origin:0 0}
+.dr .cal:hover{transform:rotate(-2deg) scale(.8)}}
+.dr .cal .nail{position:absolute;left:50%;top:-6px;width:4px;height:4px;margin-left:-2px;background:#888}
+.dr .cal b{display:block;background:#b33;color:#fff;font-family:var(--f-px);font-size:5px;padding:3px 0;margin:-3px -3px 3px;text-align:center;font-weight:400}
+.dr .cg{display:grid;grid-template-columns:repeat(7,6px);gap:1px;justify-content:center}
+.dr .cg i{width:6px;height:5px;background:#cfc6b0}
+.dr .cg i.e{background:none}
+.dr .cg i.c{background:#cfc6b0;outline:2px solid var(--red);outline-offset:1px;position:relative;z-index:1}
+.dr .drw{box-shadow:0 -4px 0 #120b04}
+.dr .drw:before{content:"";position:absolute;left:10px;top:-13px;width:18px;height:13px;background:#f7f3ea;transform:rotate(-12deg);box-shadow:1px 1px 0 #8a7a66}
+.dr .room:not(.dark) .drw{animation:dr-ajar 3.5s steps(1) infinite}
+@keyframes dr-ajar{0%,88%,100%{transform:none}92%{transform:translateY(2px)}96%{transform:translateY(-1px)}}
+.dr .drw.open:before{display:none}
+.dr .drw.open{animation:none!important;transform:translateY(10px) scale(1.12);background:#120b04;box-shadow:inset 0 6px 0 #000}
+.dr .pol{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.dr .pol.on{display:flex}
+.dr .strip{background:#f7f3ea;padding:10px 10px 6px;box-shadow:6px 6px 0 rgba(0,0,0,.5);transform:rotate(-3deg);animation:dr-polIn .6s steps(6);display:flex;flex-direction:column;gap:8px}
+@keyframes dr-polIn{0%{transform:translateY(-140px) rotate(-3deg);clip-path:inset(0 0 100% 0)}100%{transform:rotate(-3deg);clip-path:inset(0 0 0 0)}}
+.dr .fr{position:relative;width:140px;height:82px;overflow:hidden;background:#d8cfc0}
+.dr .f1{background:#e7c6c6}
+.dr .f2{background:#c9d6e3}
+.dr .f3{background:#e8dcb5}
+.dr .f4{background:#cfe0c8}
+.dr .fr span{position:absolute;bottom:4px;line-height:0}
+.dr .fr .br{color:var(--brown)}
+.dr .fr .wh{color:#fff;filter:drop-shadow(1px 0 0 #8a7a66) drop-shadow(-1px 0 0 #8a7a66) drop-shadow(0 -1px 0 #8a7a66)}
+.dr .fr .ht{color:var(--red);bottom:auto}
+.dr .strip .front{display:flex;flex-direction:column;gap:8px}
+.dr .strip .bk{display:none;width:140px;height:380px;align-items:center;justify-content:center}
+.dr .strip .bk p{font-size:26px;color:#2d3a8c;transform:rotate(-8deg);margin:0;text-align:center}
+.dr .strip.back .front{display:none}
+.dr .strip.back .bk{display:flex}
+.dr .strip.turn{animation:dr-turn .5s steps(5)}
+@keyframes dr-turn{0%{transform:rotate(-3deg) scaleX(1)}50%{transform:rotate(-3deg) scaleX(0)}100%{transform:rotate(-3deg) scaleX(1)}}
+.dr .pbtn{display:flex;gap:10px}
+.dr .sdate{margin:0;text-align:center;font-size:18px;color:#6b5a44}
+.dr .pol .x{font-family:var(--f-px);font-size:9px;background:#f7f3ea;color:#2a1c10;border:0;padding:8px 10px;cursor:pointer}
+.dr .lamp{position:absolute;z-index:3;left:41px;top:calc(64% - 94px);color:var(--gold);background:none;border:0;padding:0;cursor:pointer}
+.dr .lamp:before{content:"";position:absolute;left:-70px;top:-60px;width:190px;height:170px;background:radial-gradient(rgba(242,193,78,.32),transparent 68%);pointer-events:none}
+.dr .lamp:after{content:"";position:absolute;left:-40px;top:96px;width:130px;height:26px;background:radial-gradient(ellipse,rgba(242,193,78,.25),transparent 70%);pointer-events:none}
+.dr .room.dark .lamp:after{display:none}
+.dr .room.lhint:not(.dark) .chain:after{animation:dr-bead 1s steps(2) infinite}
+@keyframes dr-bead{50%{background:#fff;box-shadow:0 0 8px var(--gold)}}
+.dr .chain{position:absolute;left:31px;top:24px;width:2px;height:30px;background:#c9b07a;transform-origin:50% 0;animation:dr-sway 2.4s ease-in-out infinite;pointer-events:none}
+.dr .chain:after{content:"";position:absolute;left:-3px;bottom:-6px;width:8px;height:8px;background:var(--gold)}
+@keyframes dr-sway{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+.dr .lamp:hover:before{background:radial-gradient(rgba(242,193,78,.4),transparent 70%)}
+.dr .lamp:hover .chain{animation-duration:.8s}
+.dr .lamp.pull .chain{animation:dr-pull .3s steps(3)}
+@keyframes dr-pull{50%{transform:translateY(6px)}}
+.dr .room.lhint:not(.dark) .lamp{animation:dr-flk 3s steps(1) infinite}
+.dr .room.lhint:not(.dark) .lamp:before{animation:dr-flkG 3s steps(1) infinite}
+@keyframes dr-flk{0%,70%,76%,82%,88%,100%{color:var(--gold)}73%,79%,85%{color:#5c4a1e}}
+@keyframes dr-flkG{0%,70%,76%,82%,88%,100%{opacity:1}73%,79%,85%{opacity:.05}}
+.dr .room.dark .lamp{color:#5c4a1e}
+.dr .room.dark .lamp:before{display:none}
+.dr .cush{position:absolute;left:50%;top:calc(64% - 2px);margin-left:-90px;color:#7a2c3a}
+.dr .cats{position:absolute;left:50%;top:calc(64% - 80px);width:200px;margin-left:-100px;height:84px}
+.dr .cats .b{position:absolute;left:22px;bottom:0;color:var(--brown)}
+.dr .cats .w{overflow:visible;position:absolute;left:92px;bottom:0;color:#fff;transform-origin:30% 100%;transform:rotate(-8deg) translateX(-6px);filter:drop-shadow(3px 0 0 var(--night)) drop-shadow(-3px 0 0 var(--night)) drop-shadow(0 -3px 0 var(--night))}
+@keyframes dr-beat{50%{transform:scale(1.15)}}
+.dr .env{position:absolute;z-index:2;left:50%;top:calc(64% + 46px);margin-left:-33px;color:#f4ead2;background:none;border:0;padding:0;cursor:pointer;opacity:0;pointer-events:none}
+.dr .env.fall{animation:dr-leaf 5s ease-in-out forwards}
+.dr .env.down{opacity:1;pointer-events:auto;animation:dr-bob 1.6s steps(2) infinite}
+@keyframes dr-leaf{
+ 0%{opacity:0;transform:translate(60px,-380px) rotate(-25deg)}
+ 6%{opacity:1}
+ 20%{transform:translate(-50px,-300px) rotate(22deg)}
+ 38%{transform:translate(55px,-215px) rotate(-20deg)}
+ 56%{transform:translate(-40px,-135px) rotate(16deg)}
+ 74%{transform:translate(30px,-60px) rotate(-10deg)}
+ 90%{transform:translate(-6px,-8px) rotate(4deg)}
+ 100%{opacity:1;transform:translate(0,0) rotate(0)}}
+.dr .dlg{text-align:left;position:absolute;z-index:3;left:16px;right:16px;bottom:14px;margin:0;background:#000;border:4px solid #fff;padding:12px 16px;font-size:22px;color:#fff;min-height:58px;opacity:0}
+.dr .dlg.on{opacity:1}
+.dr .env .seal{position:absolute;left:27px;top:22px;color:var(--red)}
+@keyframes dr-bob{50%{transform:translateY(-4px)}}
+.dr .letter{position:absolute;z-index:5;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:16px}
+.dr .letter.on{display:flex}
+.dr .paper{background:#f4ead2;color:#2a1c10;width:100%;max-width:400px;max-height:100%;overflow:auto;padding:18px 20px;font-size:21px;line-height:1.25;box-shadow:6px 6px 0 var(--brown);border:4px solid #2a1c10}
+.dr .paper{position:relative}
+.dr .paper p{margin:0 0 2px;min-height:24px;position:relative;z-index:1}
+.dr .paper p.st{text-decoration:line-through;text-decoration-thickness:3px;color:#8a7a66}
+.dr .paper p.sx{position:relative;display:inline-block;margin:4px 0}
+.dr .paper p.sx span{position:relative;z-index:0;padding:0 4px}
+.dr .paper p.sx canvas{position:absolute;left:-6px;top:-6px;z-index:2;image-rendering:pixelated;cursor:grab;touch-action:none}
+.dr .paper p.sx.wig canvas{animation:dr-wig .5s steps(2) 2}
+@keyframes dr-wig{50%{transform:translateX(2px)}}
+.dr .paper p.dt{text-align:right;margin-top:10px;color:#6b5a44}
+.dr .stain{position:absolute;color:rgba(150,110,60,.2);z-index:0;pointer-events:none}
+.dr .rdoor{position:absolute;z-index:2;right:22px;top:calc(64% - 90px)}
+.dr .rdoor .lay{position:relative}
+.dr .rdoor .lay>*{position:absolute;left:0;top:0}
+.dr .rdoor .lay>:first-child{position:relative}
+.dr .rdoor .r-door{color:var(--brown)}
+.dr .rdoor .r-plank{color:var(--dk)}
+.dr .rdoor .r-win{color:var(--red)}
+.dr .rdoor .r-knob{color:var(--gold)}
+.dr .rdoor .mat{width:60px;height:6px;margin:0 auto;position:absolute;left:0;right:0;top:100%}
+.dr .rdoor:hover .lay{transform:translateY(-2px)}
+.dr .rdoor.call .r-win{animation:dr-dwin 1.8s steps(1) infinite}
+@keyframes dr-dwin{0%,60%,70%,80%,100%{color:#ff8a8a;filter:drop-shadow(0 0 6px #ff8a8a)}65%,75%{color:#5a1a1a;filter:none}}
+.dr .rdoor.call:after{content:"";position:absolute;left:-10px;right:-10px;top:100%;height:10px;margin-top:-4px;background:radial-gradient(ellipse,rgba(255,216,138,.55),transparent 70%);animation:dr-dgap 1.8s steps(1) infinite;pointer-events:none}
+@keyframes dr-dgap{0%,60%,70%,80%,100%{opacity:1}65%,75%{opacity:.1}}
+.dr .room.dark .rdoor:not(.open) .r-door,.dr .room.dark .rdoor:not(.open) .r-plank,.dr .room.dark .rdoor:not(.open) .r-knob{filter:brightness(.35)}
+.dr .rdoor.open .lay>:not(:first-child){display:none}
+.dr .rdoor.open .r-door{color:#ffd88a;filter:drop-shadow(3px 0 0 var(--brown)) drop-shadow(-3px 0 0 var(--brown)) drop-shadow(0 -3px 0 var(--brown))}
+.dr .rdoor .r-plank,.dr .rdoor .r-win,.dr .rdoor .r-knob{pointer-events:none}
+@keyframes dr-apIn{0%{transform:translate(-50%,30px);opacity:0}100%{transform:translateX(-50%);opacity:1}}
+.dr .fade{position:absolute;inset:0;background:#000;z-index:6;opacity:0;pointer-events:none;transition:opacity 1.2s steps(6)}
+.dr .fade.on{opacity:1}
+.dr .cats .b,.dr .cats .w{transition:transform .5s steps(3)}
+.dr .room.alone .cats .w{transform:none}
+.dr .zz{position:absolute;z-index:3;font-family:var(--f-px);font-size:11px;color:#fff;opacity:0;animation:dr-zz 2.4s steps(6) infinite}
+@keyframes dr-zz{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(10px,-26px)}}
+.dr .cats .kh{position:absolute;left:84px;top:-6px;color:var(--red);opacity:0}
+.dr .cats .kh.on{animation:dr-kiss 1.8s steps(6) forwards}
+@keyframes dr-kiss{0%{opacity:0;transform:translateY(6px)}20%{opacity:1;transform:none}80%{opacity:1;transform:translateY(-10px)}100%{opacity:0;transform:translateY(-16px)}}
+.dr .paper .x{font-family:var(--f-px);font-size:9px;background:#2a1c10;color:#f4ead2;border:0;padding:8px 10px;margin-top:12px;cursor:pointer}
+/* naam-scene */
+.drh .card{position:relative;background:var(--paper);border:4px solid var(--ink);box-shadow:8px 8px 0 var(--ink);height:340px;overflow:hidden}
+.drh .stage{position:absolute;left:0;right:0;top:80px;height:100px}
+.drh .c{position:absolute;bottom:0;color:var(--ink);line-height:0}
+.drh .c svg{display:block}
+.drh .big{left:-110px;color:#b5794a}
+.drh .small{right:-80px;color:#fff}
+.drh .small{filter:drop-shadow(3px 0 0 var(--paper)) drop-shadow(-3px 0 0 var(--paper)) drop-shadow(0 -3px 0 var(--paper))}
+.drh .pop{position:absolute;color:var(--red);opacity:0}
+.drh .hh{position:absolute;left:calc(50% - 20px);top:-14px;color:var(--red);opacity:0;line-height:0}
+.drh .hh.on{animation:drh-hhIn .4s steps(4) forwards, drh-hhBeat 1.4s steps(2) .4s infinite}
+@keyframes drh-hhIn{0%{opacity:0;transform:translateY(8px) scale(.4)}100%{opacity:1;transform:none}}
+@keyframes drh-hhBeat{50%{transform:scale(1.15)}}
+.drh .txt{position:absolute;left:22px;right:22px;bottom:22px;font-size:23px;line-height:1.3;min-height:92px}
+.drh .txt p{margin:0;min-height:30px}
+.drh .go .big{animation:drh-inB 2.4s steps(24) forwards}
+.drh .go .small{animation:drh-inS 2.4s steps(24) forwards}
+@keyframes drh-inB{to{left:calc(50% - 80px)}}
+@keyframes drh-inS{to{right:calc(50% - 34px)}}
+.drh .sit{transform-origin:50% 100%;animation:drh-plop .3s steps(3)}
+@keyframes drh-plop{0%{transform:scaleY(.8)}100%{transform:scaleY(1)}}
+.drh .small.lean{transform-origin:30% 100%;animation:drh-leanS .6s steps(3) forwards}
+.drh .big.lean{transform-origin:60% 100%;animation:drh-leanB .6s steps(3) forwards}
+@keyframes drh-leanS{to{transform:rotate(-8deg) translateX(-6px)}}
+@keyframes drh-leanB{to{transform:rotate(4deg)}}
+.drh .go .pop{animation:drh-up 1.6s steps(8) forwards}
+@keyframes drh-up{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
+@media (max-width:480px){.drh .txt{font-size:20px}}
+/* botsingen met de rest van de site neutraliseren */
+.dr .win{display:block;box-shadow:none}
+.dr .room.dark .win{box-shadow:0 0 40px rgba(140,160,255,.25)}
+.drh .stage{display:block;gap:0}
+.dr .paper p.st{display:inline-block}
+/* telefoon: katten iets naar rechts, weg van het nachtkastje */
+@media (max-width:480px){
+  .dr{padding:8px}
+  .dr .cats{margin-left:-76px}
+  .dr .cush{margin-left:-66px}
+  .dr .stand{left:14px}.dr .lamp{left:29px}
+  .dr .dlg{font-size:19px}
+}
+@media (max-width:480px){ .drh .card{height:430px} .drh .stage{top:50px} .drh .txt{font-size:20px} }
+
+/* brief: vaste hoogte en een bruine scrollbalk */
+.dr .letter .paper{height:100%;scrollbar-width:thin;scrollbar-color:#b5794a #e8dcc0}
+.dr .paper::-webkit-scrollbar{width:10px}.dr .paper::-webkit-scrollbar-track{background:#e8dcc0}.dr .paper::-webkit-scrollbar-thumb{background:#b5794a}
+/* naam-scene: een lamp die aangaat */
+.drh .lmp{position:absolute;left:50%;top:44px;width:63px;margin-left:-32px;height:120px;color:#3a3020}
+.drh .lmp .lp{position:relative;z-index:1;display:block}
+.drh .lmp .ch{position:absolute;z-index:1;left:46px;top:36px;width:3px;height:40px;background:#6b5a3a;transform-origin:50% 0;animation:drh-sway 2.4s ease-in-out infinite}
+.drh .lmp .ch:after{content:"";position:absolute;left:-3px;bottom:-7px;width:9px;height:9px;background:#8a7440}
+@keyframes drh-sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.drh .lmp.tug .ch{animation:drh-tug .4s steps(3)}
+@keyframes drh-tug{50%{transform:translateY(10px)}}
+.drh .lmp .glow{position:absolute;left:-120px;top:-80px;width:300px;height:260px;background:radial-gradient(rgba(242,193,78,.38),transparent 65%);opacity:0;pointer-events:none}
+.drh .lmp.on{color:#f2c14e}.drh .lmp.on .ch{background:#c9b07a}.drh .lmp.on .ch:after{background:#f2c14e}
+.drh .lmp.on .glow{opacity:1}
+.drh .lmp.flick .glow{animation:drh-flick .9s steps(1)}
+@keyframes drh-flick{0%{opacity:1}20%{opacity:.2}35%{opacity:1}50%{opacity:.4}65%,100%{opacity:1}}
+.drh .card{height:330px}
+.drh .txt{bottom:18px}
+@media (max-width:480px){ .drh .card{height:400px} }
+.dr-bush .bd{z-index:0}.dr-bush .bl,.dr-bush .br{z-index:1}
+@media (max-width:480px){.dr-bush{transform:scale(.7);transform-origin:left bottom;left:-10px}}
+
+.dr-bush .bl,.dr-bush .br{width:60px;height:60px}
+.dr-bush .bf{position:absolute;left:0;bottom:0;color:var(--paper)}
+.dr-bush .bo{position:absolute;left:0;bottom:0;color:var(--ink)}
+.dr-bush .br{left:60px;right:auto}
+@media (min-width:481px){.end .props .ds1{left:max(132px,4%)!important}.end .props .ds2{left:max(214px,12%)!important}}
+/* de deur knippert zodra de struik open is */
+.dr-bush.ready .nk-d3{animation:dr-dwin 1.2s steps(1) infinite}
+.dr-bush.ready .nk-d1{animation:dr-dglow 1.2s steps(1) infinite}
+@keyframes dr-dwin{0%,55%,100%{color:#ff8a8a}60%,80%{color:#5a1a1a}}
+@keyframes dr-dglow{0%,55%,100%{filter:drop-shadow(0 0 6px #ffd88a)}60%,80%{filter:none}}
+.dr-bush.part{cursor:pointer}
+/* ja/nee keuze in het tekstvak */
+.dr .dlg .choice{display:flex;gap:28px;margin-top:8px;padding-left:22px}
+.dr .dlg .choice button{background:none;border:0;color:#fff;font-family:var(--f-px);font-size:12px;padding:4px 0;cursor:pointer}
+
+
+.dr .dlg .choice button:focus{outline:none}
+/* tweede bezoek: de brief steekt een beetje uit onder het kussen */
+.dr .env.under{opacity:1;pointer-events:auto;animation:none;top:calc(64% - 12px);margin-left:-128px;transform:scale(.55) rotate(-10deg);transform-origin:100% 50%;clip-path:inset(0 30px 0 0)}
+.dr .env.under:hover{transform:scale(.55) rotate(-14deg) translateX(-6px)}
+/* zijn deur is even hoog als de museumdeur (99px), de struik groeit mee */
+.dr-bush{width:204px;height:102px}
+.dr-bush .bl,.dr-bush .br{width:102px;height:102px}
+.dr-bush .br{left:102px}
+.dr-bush .bd{left:69px}
+.dr-bush.part .bl{transform:translateX(-84px)}.dr-bush.part .br{transform:translateX(84px)}
+@media (min-width:481px){.end .props .ds1{left:max(206px,4%)!important}.end .props .ds2{left:max(290px,12%)!important}.end .props .ds3{left:max(376px,26%)!important}}
+@media (max-width:480px){.dr-bush{transform:scale(.5);left:-12px}}
+/* het vuurvliegje */
+.nk-fly{position:fixed;z-index:250;left:14px;top:55vh;width:8px;height:8px;background:#f2c14e;box-shadow:0 0 10px 4px rgba(242,193,78,.55),0 0 26px 10px rgba(242,193,78,.18);pointer-events:none;animation:nk-bob 2.6s ease-in-out infinite,nk-blink 3s steps(1) infinite}
+@keyframes nk-bob{0%,100%{transform:translate(0,0)}25%{transform:translate(6px,-8px)}50%{transform:translate(0,-14px)}75%{transform:translate(-6px,-6px)}}
+@keyframes nk-blink{0%,70%,100%{opacity:1}74%{opacity:.25}78%{opacity:1}82%{opacity:.4}}
+.nk-fly.fly{animation:nk-blink 3s steps(1) infinite}
+.nk-fly.land{position:absolute;z-index:2;animation:nk-blink 3s steps(1) infinite,nk-sit 1.6s ease-in-out infinite}
+@keyframes nk-sit{50%{transform:translateY(-3px)}}
+.dr-bush.rustle .bl{animation:dr-bushL .9s steps(1) 4}.dr-bush.rustle .br{animation:dr-bushR .9s steps(1) 4}
+@media (prefers-reduced-motion:reduce){.nk-fly{animation:none}}
+.dr .dlg .choice button{display:inline-flex;align-items:center;gap:8px;line-height:1}
+.dr .dlg .choice .hs{color:var(--red);visibility:hidden;display:inline-flex}
+.dr .dlg .choice button:hover .hs,.dr .dlg .choice button:focus .hs{visibility:visible}
+/* "i still miss you." wordt eerst helemaal getypt en daarna doorgestreept */
+.dr .paper p.st{text-decoration:none;color:#8a7a66;background:linear-gradient(#2a1c10,#2a1c10) no-repeat 0 55%/100% 3px;animation:nk-strike .5s steps(6)}
+@keyframes nk-strike{from{background-size:0 3px;color:#2a1c10}}
+.dr .rdoor.rattle .lay{animation:nk-rattle .4s steps(4)}
+@keyframes nk-rattle{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.dr .paper p.st.now{animation:none}
+/* na de wens: de deur gloeit duidelijk */
+.dr .room.dark .rdoor.call .r-door{filter:brightness(.75) drop-shadow(0 0 6px rgba(255,216,138,.8))}
+.dr .rdoor.call .lay{animation:nk-callbob 1.8s steps(2) infinite}
+@keyframes nk-callbob{50%{transform:translateY(-2px)}}
+/* naam-scene: vuurvliegje */
+.drh .fy{position:absolute;left:-10px;top:230px;width:8px;height:8px;background:#f2c14e;box-shadow:0 0 10px 4px rgba(242,193,78,.55),0 0 30px 12px rgba(242,193,78,.2);opacity:0;transition:transform .6s steps(4)}
+.drh .fy.big{transform:scale(1.6)}
+.drh .fyglow{position:absolute;left:50%;top:95px;width:300px;height:220px;margin:-110px 0 0 -150px;background:radial-gradient(rgba(242,193,78,.3),transparent 65%);opacity:0;transition:opacity 1.6s}
+.drh .fyglow.on{opacity:1}
+/* knuffels */
+.dr .plush{position:absolute;line-height:0;z-index:0}
+.dr .p-rw{left:88px;top:calc(64% - 62px);color:#f4f1ea}
+.dr .p-rg{left:118px;top:calc(64% - 22px);color:#a7a7ad}
+.dr .p-fr{right:100px;top:calc(64% - 2px);color:#7fc36a}
+.dr .p-bear{left:calc(50% + 48px);top:calc(64% - 37px);color:#d9b38c}
+.dr .plush .th,.dr .hug .th{position:absolute;color:#ff2b2b;line-height:0}
+.dr .plush .tp,.dr .hug .tp{position:absolute;left:0;top:0;color:#a87e57;line-height:0}
+.dr .cats .hug{position:absolute;left:104px;bottom:0;color:#d9b38c;line-height:0;display:none;z-index:1}
+.dr .room.holding .cats .hug{display:block}
+.dr .room.holding .p-bear{display:none}
+@media (max-width:480px){.dr .p-rg{left:100px}.dr .p-bear{left:calc(50% + 66px)}}
+/* het fotoboek */
+.dr .book{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:12px}
+.dr .book.on{display:flex}
+.dr .bk-in{background:#7a4e2c;padding:14px 14px 10px;box-shadow:8px 8px 0 rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:center;gap:8px;max-width:100%}
+.dr .bk-page{background:#f4ead2;padding:10px 10px 4px;width:380px;max-width:calc(100vw - 72px);touch-action:pan-y;user-select:none}
+.dr .bk-page.turn{animation:dr-bkturn .32s steps(4)}
+@keyframes dr-bkturn{0%{transform:scaleX(1)}50%{transform:scaleX(.05)}100%{transform:scaleX(1)}}
+.dr .bk-art{position:relative;width:360px;height:240px;overflow:hidden;max-width:100%;transform-origin:0 0}
+.dr .bk-art>i{position:absolute;display:block}
+.dr .bk-art .bk-svg{position:absolute;left:0;top:0}
+.dr .bk-art .ac{position:absolute;display:flex;align-items:flex-end;line-height:0}
+.dr .bk-pin{position:absolute;width:8px;height:8px;background:#c33;border-radius:50%}
+.dr .bk-lbl{position:absolute;font-family:var(--f-txt);font-weight:400;font-size:16px;color:#4a3a28;white-space:nowrap}
+.dr .bk-q{position:absolute;left:0;right:0;top:70px;text-align:center;font-family:var(--f-txt);font-weight:400;font-size:90px;color:#c9b99a}
+.dr .bk-slot{position:absolute;right:8px;top:8px;width:34px;height:96px;border:2px dashed #fff8;transform:rotate(6deg)}
+.dr .bk-slot.full{border:0;background:#f7f3ea;box-shadow:2px 2px 0 #0004}
+.dr .bk-slot.full:before{content:"";position:absolute;left:4px;right:4px;top:4px;bottom:16px;background:repeating-linear-gradient(#e7c6c6 0 18px,#f7f3ea 18px 22px,#c9d6e3 22px 40px,#f7f3ea 40px 44px)}
+.dr .bk-cap{margin:6px 0 2px;text-align:center;font-family:var(--f-txt);font-size:21px;color:#2d3a8c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dr .bk-nav{display:flex;align-items:center;gap:14px;color:#f4ead2;font-family:var(--f-px);font-size:9px}
+.dr .bk-nav .x,.dr .bk-close{font-family:var(--f-px);font-size:9px;background:#f4ead2;color:#2a1c10;border:0;padding:8px 10px;cursor:pointer}
+.dr .bk-nav .x:disabled{opacity:.35;cursor:default}
+.dr .bk-drop{position:absolute;right:28px;bottom:-200px;width:40px;height:110px;border:0;padding:0;cursor:pointer;background:#f7f3ea;box-shadow:3px 3px 0 #0006;opacity:0;pointer-events:none}
+.dr .bk-drop:before{content:"";position:absolute;left:5px;right:5px;top:5px;bottom:18px;background:repeating-linear-gradient(#e7c6c6 0 20px,#f7f3ea 20px 25px,#c9d6e3 25px 45px,#f7f3ea 45px 50px)}
+.dr .bk-drop.on{opacity:1;pointer-events:auto;animation:dr-fallout 1.4s ease-in forwards}
+@keyframes dr-fallout{0%{bottom:60%;right:45%;transform:rotate(0)}40%{transform:rotate(-18deg)}70%{transform:rotate(12deg)}100%{bottom:22px;right:28px;transform:rotate(-8deg)}}
+.dr .bk-drop.on:hover{filter:drop-shadow(0 0 6px #ffd88a)}
+/* het fotoboek als open boek: links en rechts een pagina */
+.dr .book{position:fixed}
+.dr .bk-in{background:#6b4426;padding:16px 16px 10px;border-radius:6px}
+.dr .bk-spread{position:relative;display:flex;align-items:stretch;perspective:1400px;touch-action:pan-y;user-select:none}
+.dr .bk-pg{background:#f4ead2;padding:12px 12px 4px;display:flex;flex-direction:column;align-items:center}
+.dr .bk-pg.l{box-shadow:inset -14px 0 18px -12px #0004}.dr .bk-pg.r{box-shadow:inset 14px 0 18px -12px #0004}
+.dr .bk-pg.blank .bk-box{visibility:hidden}
+.dr .bk-spine{width:6px;background:linear-gradient(90deg,#c9b99a,#8a6a44,#c9b99a)}
+.dr .bk-box{position:relative;overflow:hidden}
+.dr .bk-box .bk-art{position:absolute;left:0;top:0;width:360px;height:240px;transform-origin:0 0;max-width:none}
+.dr .book.one .bk-spine{display:none}
+.dr .bk-flip{position:absolute;top:0;bottom:0;width:calc(50% - 3px);background:#efe3c6;display:none;z-index:3;backface-visibility:visible}
+.dr .bk-flip.fwd{right:0;transform-origin:left center}.dr .bk-flip.back{left:0;transform-origin:right center}
+.dr .bk-flip.go{display:block}
+.dr .bk-flip.fwd.go{animation:dr-flipF .45s ease-in-out forwards}.dr .bk-flip.back.go{animation:dr-flipB .45s ease-in-out forwards}
+@keyframes dr-flipF{0%{transform:rotateY(0);filter:brightness(1)}50%{filter:brightness(.8)}100%{transform:rotateY(-180deg);opacity:.0}}
+@keyframes dr-flipB{0%{transform:rotateY(0);filter:brightness(1)}50%{filter:brightness(.8)}100%{transform:rotateY(180deg);opacity:0}}
+.dr .book.one .bk-flip{width:100%}
+.dr .bk-msg{margin:4px 0 0;min-height:24px;font-family:var(--f-txt);font-size:20px;color:#f4ead2;text-align:center}
+/* het raam: echte tijd en regen */
+.dr .win:before,.dr .win:after{z-index:4}
+.dr .win .sk{position:absolute;inset:0;opacity:0;transition:opacity 3s;z-index:1;pointer-events:none}
+.dr .win .sk-day{background:linear-gradient(#5fa8e6,#bfe0f5)}
+.dr .win .sk-dusk{background:linear-gradient(#2c2f63,#c86a5a 70%,#f2b56e)}
+.dr .win.day .sk-day,.dr .win.dusk .sk-dusk{opacity:1}
+.dr .win .sun{position:absolute;right:26px;top:18px;width:26px;height:26px;background:#ffd84a;box-shadow:0 0 18px 6px #ffe48a88}
+.dr .win .rainl{position:absolute;inset:0;z-index:3;opacity:0;transition:opacity 2s;pointer-events:none;background:rgba(70,80,100,.35)}
+.dr .room.rain .win .rainl{opacity:1}
+.dr .win .rainl .cloud{position:absolute;left:-10%;right:-10%;top:-8px;height:46px;background:radial-gradient(ellipse at 20% 60%,#6b7385 30%,transparent 31%),radial-gradient(ellipse at 50% 40%,#737b8e 34%,transparent 35%),radial-gradient(ellipse at 80% 60%,#6b7385 30%,transparent 31%)}
+.dr .win .rainl .drop{position:absolute;top:-12px;width:2px;height:12px;background:#cfe3ff99;animation:dr-rain .9s linear infinite}
+@keyframes dr-rain{to{transform:translateY(230px)}}
+/* aaien en knuffels */
+.dr .cats .w{cursor:pointer}
+.dr .plush,.dr .cats .hug{cursor:pointer;pointer-events:auto}
+.dr .wig{animation:dr-wig .45s steps(3)}
+@keyframes dr-wig{25%{translate:0 -3px}50%{translate:-2px 0}75%{translate:2px -1px}}
+.dr .cats{pointer-events:none}.dr .cats .w,.dr .cats .hug{pointer-events:auto}.dr .p-bear{z-index:1}

@@ -145,11 +145,14 @@
     const hideTip=()=>{ tip.hidden=true; };
     door.addEventListener("mouseenter",showTip); door.addEventListener("mouseleave",hideTip);
     door.addEventListener("click",()=>{ if(inMuseum) return;
-      if(window.keyHeld||(isMember()&&!out&&!window.tcatOut)){ if(window.keyHeld&&window.dropKey){ dropKey(); if(window.SFX&&SFX.unlockDoor) SFX.unlockDoor(); } hideTip(); openMuseum("visit"); return; }
+      if(window.keyHeld||(isMember()&&!out&&!window.tcatOut)){ if(window.keyHeld&&window.dropKey){ dropKey(); if(window.useKey) useKey(); if(window.SFX&&SFX.unlockDoor) SFX.unlockDoor(); } hideTip(); openMuseum("visit"); return; }
       showTip(); tipT=setTimeout(hideTip,3500); });
     /* de sleutel tussen de muntjes: oppakken en de deur ermee openen */
     const key=document.getElementById("museumKey");
-    if(key){ let fol=null; const fine=matchMedia("(pointer:fine)").matches;
+    /* de sleutel is na 1 keer gebruiken op: er ligt dan gewoon een muntje */
+    window.useKey=()=>{ try{ localStorage.setItem("catKeyUsed","1"); }catch(e){} const k=document.getElementById("museumKey"); if(k){ const c=document.createElement("span"); c.setAttribute("data-sprite","coin"); c.setAttribute("data-s","5"); c.innerHTML=sprite("coin",5); k.replaceWith(c); } };
+    if(key){ let used=false; try{ used=localStorage.getItem("catKeyUsed")==="1"; }catch(e){} if(used){ useKey(); } }
+    if(key&&key.isConnected){ let fol=null; const fine=matchMedia("(pointer:fine)").matches;
       const move=e=>{ if(fol){ fol.style.left=(e.clientX+14)+"px"; fol.style.top=(e.clientY+14)+"px"; } };
       window.dropKey=()=>{ window.keyHeld=false; key.style.visibility=""; if(fol){ fol.remove(); fol=null; } removeEventListener("pointermove",move); };
       key.addEventListener("click",e=>{ e.stopPropagation(); if(window.keyHeld){ dropKey(); return; }

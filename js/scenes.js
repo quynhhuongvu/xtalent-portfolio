@@ -16,7 +16,7 @@ const SLIDES={
       <i class="sl-stamp sl-a">PHISHING!</i><i class="sl-stamp ok sl-b">SAFE &#10003;</i></i>`,
     ()=>`<i class="sl-big">BEST ETHICAL INNOVATION</i><i class="sl-ban np" style="left:74px;top:24px"><b>ARCTIC</b><b>INTELLIGENCE</b></i>
       <i class="sl-tro sl-big-tro" style="left:108px;top:72px">${sprite("trophy",6)}<i class="sl-two">2</i></i>
-      ${[[18,0],[52,.2],[192,.4],[226,.6]].map(([x,d])=>`<i class="sl-cat sl-hop" style="left:${x}px;bottom:6px;animation-delay:-${d}s">${x>150?`<i style="display:block;transform:scaleX(-1)">${sprite("catA",2)}</i>`:sprite("catA",2)}</i>`).join("")}
+      ${[[18,0],[52,.2],[192,.4],[226,.6]].map(([x,d])=>`<i class="sl-cat sl-hop" style="left:${x}px;bottom:6px;animation-delay:-${d}s">${x>150?sprite("catA",2).replace("<svg ",`<svg style="transform:scaleX(-1)" `):sprite("catA",2)}</i>`).join("")}
       <i class="sl-ha" style="left:30px;top:84px">YAY!</i><i class="sl-ha" style="left:206px;top:80px;animation-delay:-.3s">YAY!</i><i class="es-floor"></i>${confetti()}`
   ]
 };

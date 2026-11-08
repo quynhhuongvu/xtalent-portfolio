@@ -1,16 +1,21 @@
 /* hartjes: verlies er een bij overslaan of vluchten */
+SPR.inf=[".###...###.","#...#.#...#","#....#....#","#...#.#...#",".###...###."];
 window.Life=(function(){
   const nl=()=>document.documentElement.lang==="nl";
   let els=[...document.querySelectorAll('.hud .p1>[data-sprite="heart"]')]; const wrap=document.querySelector(".hud .p1");
   let MAX=3; try{ const m=+localStorage.getItem("catHeartMax"); if(m>=1&&m<=5) MAX=m; }catch(e){}
+  /* oneindig hartjes */
+  const INF=()=>{ try{ return localStorage.getItem("nookMode")==="1"; }catch(e){ return false; } };
+  if(INF()) MAX=1;
   function build(){ if(!wrap) return; els.forEach(e=>e.remove()); els=[]; const lbl=wrap.querySelector("span:not([data-sprite])");
-    for(let i=0;i<MAX;i++){ const e=document.createElement("span"); e.setAttribute("data-sprite","heart"); e.setAttribute("data-s","2"); wrap.insertBefore(e,lbl); els.push(e); } }
-  if(MAX!==3) build();
+    for(let i=0;i<MAX;i++){ const e=document.createElement("span"); e.setAttribute("data-sprite","heart"); e.setAttribute("data-s","2"); wrap.insertBefore(e,lbl); els.push(e); }
+    const oi=wrap.querySelector(".inf"); if(oi) oi.remove(); if(INF()){ const i=document.createElement("span"); i.className="inf"; i.title="infinite"; i.innerHTML=sprite("inf",2); wrap.insertBefore(i,lbl); } }
+  if(MAX!==3||INF()) build();
   let h=MAX; try{ const v=localStorage.getItem("catHearts"); if(v!==null&&v!=="") h=Math.max(0,Math.min(MAX,+v||0)); }catch(e){}
   function draw(){ els.forEach((e,i)=>{ const full=i<h; e.innerHTML=sprite(full?"heart":"heartE",2); e.classList.toggle("lost",!full); }); if(wrap) wrap.classList.toggle("dead",h===0); }
   function set(v){ const old=h; h=Math.max(0,Math.min(MAX,v)); try{ localStorage.setItem("catHearts",h); }catch(e){} draw(); if(h<old&&old>=0&&window.SFX) SFX.heartLoss();
     const e=els[h<old?h:old]; if(e&&h!==old){ e.classList.remove("hpop"); void e.offsetWidth; e.classList.add("hpop"); } }
-  function lose(){ if(h<=0) return; set(h-1);
+  function lose(){ if(INF()){ const e=els[0]; if(e){ e.classList.remove("hpop"); void e.offsetWidth; e.classList.add("hpop"); } return; } if(h<=0) return; set(h-1);
     if(h===0){ if(window.Ach) Ach.earn("zero"); setTimeout(gameOver,MAX===1?3400:2800); } }
   function gameOver(){ if(document.querySelector(".go-scr")) return; if(window.SFX){ SFX.hit(); setTimeout(SFX.hit,600); setTimeout(SFX.lose,1700); }
     const o=document.createElement("div"); o.className="museum go-scr"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Game over");
@@ -25,7 +30,8 @@ window.Life=(function(){
   }
   draw(); if(h===0) setTimeout(gameOver,700);
   function setMax(m){ MAX=Math.max(1,Math.min(5,m)); try{ localStorage.setItem("catHeartMax",MAX); }catch(e){} build(); h=-1; set(MAX); if(window.Ach&&Ach.refresh) Ach.refresh(); }
-  return {get:()=>h,max:()=>MAX,set,add:n=>set(h+n),lose,full:()=>set(MAX),setMax};
+  function refresh(){ if(INF()){ MAX=1; build(); h=1; try{ localStorage.setItem("catHearts",1); }catch(e){} draw(); if(wrap) wrap.classList.remove("dead"); } }
+  return {get:()=>h,max:()=>MAX,set,add:n=>set(h+n),lose,full:()=>set(MAX),setMax,refresh};
 })();
 
 window.Memo=(function(){
@@ -36,6 +42,8 @@ window.Memo=(function(){
   const back=!!get("catSeen"); put("catSeen","1");
   { const hh=new Date().getHours(); if(hh>=22||hh<5) setTimeout(()=>window.Ach&&Ach.earn("owl"),2500); if(back) setTimeout(()=>window.Ach&&Ach.earn("back"),2600); }
   let rec=null, feeds=0, greeted=false, pending=false, wonNow=false;
+  /* elk bezoek begint met een schone lei, anders bleef het aantal van een oud bezoek staan */
+  put("catMemo",JSON.stringify({feeds:0,skipped:false}));
   function save(){ rec=rec||{feeds:0,skipped:false}; rec.feeds=feeds; put("catMemo",JSON.stringify(rec)); }
   function text(){
     if(prev&&prev.skipped&&!prev.feeds) return nl()?"...vorige keer gaf je de kat geen eten. hij onthoudt het.":"...last time you didn't feed the cat. it remembers.";
@@ -494,3 +502,12 @@ window.Memo=(function(){
     ["mouseover","focusin","click"].forEach(ev=>tl.addEventListener(ev,start));
     tl.addEventListener("mouseout",e=>{ if(se&&!(e.relatedTarget&&se.contains(e.relatedTarget))) stop(); }); tl.addEventListener("focusout",e=>{ if(se&&!(e.relatedTarget&&se.contains(e.relatedTarget))) stop(); }); }
 })();
+
+/* hint: na 40 seconden bij de CATSOLE vraagt de kat zich af of hij door de geheime deur past.
+   1 keer per bezoek, en alleen zolang iemand het museum nog nooit vond */
+(function(){ let onFor=0, done=false;
+  setInterval(()=>{ if(done||document.hidden) return; try{ if(localStorage.getItem("catMuseum")){ done=true; return; } }catch(e){}
+    const d=document.getElementById("ds"), sc=document.querySelector(".screen"), m=typeof msg!=="undefined"?msg:null;
+    if(!d||d.classList.contains("off")||d.classList.contains("closed")||!sc||sc.classList.contains("game")||sc.classList.contains("show-stats")||sc.classList.contains("empty")){ onFor=0; return; }
+    if(m&&m.classList.contains("on")) return;
+    onFor+=5; if(onFor>=40&&typeof say==="function"){ done=true; say("> ...could i fit through that door?",4500); } },5000); })();
