@@ -185,7 +185,7 @@ window.Nook=(function(){
     /* terugleggen: de strip schuift terug in het boek, op de pagina van düsseldorf */
     $(".px").onclick=()=>{ $(".strip").classList.remove("back"); $(".pflip").textContent="TURN OVER"; $(".pol").classList.remove("on"); tucked=true; const sl=$(".bk-slot"); if(sl) sl.classList.add("full"); if($(".book").classList.contains("on")) bookSay("* (you tuck it back where it belongs.)"); else say("* (you tuck it back where it belongs.)"); };
     /* kalender */
-    $(".cal").onclick=()=>{ if(pending||Date.now()<storyUntil) return; side("* (9 september 2023. nobody turned the page.)"); later(()=>{ sideOn=true; say("* time stood still here.",true); sideOn=false; },2600); };
+    $(".cal").onclick=()=>{ const cl=$(".cal"); cl.classList.remove("wig"); void cl.offsetWidth; cl.classList.add("wig"); if(pending||Date.now()<storyUntil) return; side("* (9 september 2023. nobody turned the page.)"); later(()=>{ sideOn=true; say("* time stood still here.",true); sideOn=false; },2600); };
     /* wens */
     function maybeWish(extra){ if(!alone||wished||!R.classList.contains("dark")) return; wished=true;
       later(()=>{ if(!R.classList.contains("dark")){ wished=false; return; } $(".cats .w").innerHTML=spr("catback",3); later(()=>say("* the cat made a wish. it didn't say what."),900); later(()=>{ $(".rdoor").classList.add("call"); say("* (let her rest now. the door is open.)"); },4800); },2600+(extra||0)); }
